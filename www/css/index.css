@@ -19,6 +19,11 @@ body {
   border-bottom: 1px solid #eee;
 }
 
+.widget{
+    height:200px !important;
+    width:200px !important;
+    float:left;
+}
 .overflow-scroll{
     overflow: scroll;
 }

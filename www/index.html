@@ -68,15 +68,21 @@
         <div class="col-sm-9 col-sm-offset-3 main">
           <h1 class="page-header">Servers</h1>
 
-          <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3 placeholder">
-                <div id="widget1" width=200 height=200></div>
+          <div class="row">
+            <div class="">
+                <div class="widget" id="widget1" width=200 height=200></div>
             </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <div id="widget2" width=200 height=200></div>
+            <div class="">
+              <div class="widget" id="widget2" width=200 height=200></div>
             </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <div id="widget3" width=200 height=200></div>
+            <div class="">
+              <div class="widget" id="widget3" width=200 height=200></div>
+            </div>
+              <div class="">
+                <div class="widget" id="widget4" width=200 height=200></div>
+            </div>
+              <div class="">
+                <div class="widget" id="widget5" width=200 height=200></div>
             </div>
             
            
@@ -136,7 +142,7 @@
                             "<td>"+this.serverSettings.serverName+"</td>"+
                             "<td>"+m+"</td>"+
                             "</tr>");
-                        $(".notshown").removeClass(".notshown").show('slow');
+                        $(".notshown").show('slow').removeClass("notshown");
                         
                     };
                 }
