@@ -131,11 +131,13 @@
                     window.page.widgets[i].create();
                     window.page.widgets[i].getData();
                     window.page.widgets[i].onalert = function(m) {
-                        $("#cconsole").prepend("<tr>"+
+                        $("#cconsole").prepend("<tr class=\"notshown\">"+
                             "<td>"+new Date()+"</td>"+
                             "<td>"+this.serverSettings.serverName+"</td>"+
                             "<td>"+m+"</td>"+
                             "</tr>");
+                        $(".notshown").removeClass(".notshown").show('slow');
+                        
                     };
                 }
 //                  var widget1 = new ServerWidget("#widget1", app.servers[0] );
