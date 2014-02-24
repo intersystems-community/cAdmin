@@ -6,13 +6,19 @@
 body {
   padding-top: 50px;
 }
-
+h3 span{
+/*    float:right;*/
+    margin:10px;
+}
 
 /*
  * Global add-ons
  */
 .notshown{
     display:none;
+}
+h1 button{
+    margin-right:5px;
 }
 .sub-header {
   padding-bottom: 10px;
@@ -28,6 +34,9 @@ body {
     overflow: scroll;
 }
 .table-responsive.overflow-scroll{
+    height: 240px !important;
+}
+table .overflow-scroll{
     height: 240px !important;
 }
 /*

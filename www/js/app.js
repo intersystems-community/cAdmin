@@ -12,10 +12,10 @@ function App(){
 }
 
 var app = new App();
-            app.servers = [
-                {serverName:"Server1", user:"root", password:"zckKqko12", server:"ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls"},
-                {serverName:"Server2", user:"root", password:"zckKqko12", server:"ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls"},
-                {serverName:"Server3", user:"root", password:"zckKqko12", server:"ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls"},
-                {serverName:"Server4", user:"root", password:"zckKqko12", server:"ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls"},
-                {serverName:"Server5", user:"root", password:"zckKqko12", server:"ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls"}
+            app.serverData = [
+                {serverName:"Predictive", user:"root", password:"zckKqko12", server:"ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls"},
+                {serverName:"REST server", user:"root", password:"zckKqko12", server:"ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls"},
+                {serverName:"Test1", user:"root", password:"zckKqko12", server:"ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls"},
+                {serverName:"Test2", user:"root", password:"zckKqko12", server:"ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls"},
+                {serverName:"Some", user:"root", password:"zckKqko12", server:"ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls"}
             ];

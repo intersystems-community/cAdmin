@@ -1,5 +1,17 @@
 <!DOCTYPE html>
 
+<!-- 
+
+
+
+
+
+**************************  Entry point for application
+*************   We do NOT leave this page
+
+
+-->
+
 <html>
     <head>
         <meta charset="utf-8" />
@@ -7,16 +19,32 @@
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/ios.css" rel="stylesheet">
         <link href="css/index.css" rel="stylesheet">
+        <link href="css/switchery.css" rel="stylesheet"
      </head>
     <body>
+
+<script src="http://code.jquery.com/jquery-2.1.0.js"></script>
+<script src="js/bootstrap.js"></script>
 <script src="js/app.js"></script> <!-- INITIALIZED APP-SCOPED OBJECT -->
 <script src="js/serverWidget.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/transitionize.js"></script>
+<script src="js/switchery.js"></script> <!-- some eye-candy: iOS switchers -->
+<script src="js/utils.js"></script>
+        <script>
+         app.nav = new Navigator();
+            $(document).on('ready',function(){
+             app.nav.navigate("#content","main.html");
+            $(document).off("ready");
+            });
+        </script>
 <script src="http://d3js.org/d3.v3.js"></script>
 
 
         
-    <script src="http://code.jquery.com/jquery-2.1.0.js"></script>
+    
 
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
@@ -36,9 +64,6 @@
             <li><a href="#">Profile</a></li>
             <li><a href="#">Help</a></li>
           </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
         </div>
       </div>
     </div>
@@ -47,125 +72,29 @@
       <div class="row">
         <div class="col-sm-3 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview</a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Analytics</a></li>
-            <li><a href="#">Export</a></li>
+            <li class="active"><a href="index.html">Dashboard</a></li>
+          </ul>
+          <ul class="nav nav-sidebar server-menu" style="display:none">
+            <li><a href="">Web Terminal</a></li>
+            <li><a href="">Management Portal</a></li>
+            <li><a href="">Documentation</a></li>
+            
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="">Nav item</a></li>
+<!--
             <li><a href="">Nav item again</a></li>
             <li><a href="">One more nav</a></li>
             <li><a href="">Another nav item</a></li>
-            <li><a href="">More navigation</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
+-->
           </ul>
         </div>
-        <div class="col-sm-9 col-sm-offset-3 main">
-          <h1 class="page-header">Servers</h1>
-
-          <div class="row">
-            <div class="">
-                <div class="widget" id="widget1" width=200 height=200></div>
-            </div>
-            <div class="">
-              <div class="widget" id="widget2" width=200 height=200></div>
-            </div>
-            <div class="">
-              <div class="widget" id="widget3" width=200 height=200></div>
-            </div>
-              <div class="">
-                <div class="widget" id="widget4" width=200 height=200></div>
-            </div>
-              <div class="">
-                <div class="widget" id="widget5" width=200 height=200></div>
-            </div>
-            
+        <div class="col-sm-9 col-sm-offset-3 main" id="content">
            
-          </div>
-
-          <h2 class="sub-header">Cconsole.log</h2>
-          <div class="table-responsive overflow-scroll">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Time</th>
-                  <th>Server</th>
-                    <th>Message</th>
-                </tr>
-              </thead>
-              <tbody id="cconsole">
-                <tr>
-                  <td>21/02/14 9:25:00</td>
-                  <td>Server 1</td>
-                  <td>Terminated</td>
-                </tr>
-                <tr>
-                  <td>21/02/14 9:24:59</td>
-                  <td>The Server</td>
-                  <td>Finished publishing DB</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+            <!--    ************* CONTENT GOES HERE ***************     -->
+            
         </div>
       </div>
     </div>
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.js"></script>
-        <script>
-                window.page={};
-                window.page.widgets = [];
-                for(i=0;i<app.servers.length;i++)
-                {
-                    window.page.widgets.push(new ServerWidget("#widget"+(i+1), app.servers[i]));
-                    window.page.widgets[i].create();
-                    window.page.widgets[i].getData();
-                    window.page.widgets[i].onalert = function(m) {
-                        $("#cconsole").prepend("<tr class=\"notshown\">"+
-                            "<td>"+new Date()+"</td>"+
-                            "<td>"+this.serverSettings.serverName+"</td>"+
-                            "<td>"+m+"</td>"+
-                            "</tr>");
-                        $(".notshown").show('slow').removeClass("notshown");
-                        
-                    };
-                }
-//                  var widget1 = new ServerWidget("#widget1", app.servers[0] );
-//                    //widget1.serverName="Server#1";
-//                    widget1.create();
-//                    widget1.getData();
-//                    var widget2 = new ServerWidget("#widget2", app.servers[1] );
-//                    widget2.create();
-//                    widget2.getData();
-//            
-//                    var widget3 = new ServerWidget("#widget3", app.servers[1] );
-//                    widget3.create();
-//                    widget3.getData();
-//                    widget3.onalert = function(m) {
-//                        $("#cconsole").prepend("<tr>"+
-//                            "<td>"+new Date()+"</td>"+
-//                            "<td>"+widget3.serverSettings.serverName+"</td>"+
-//                            "<td>"+m+"</td>"+
-//                            "</tr>");
-//                    };
-                    $("#widget1").css("cursor", "default")
-                    $("#widget1").on("touchstart", function(){console.log("touch");});
-            </script>
     </body>
 </html>

@@ -1,34 +1,63 @@
 
-function ServerWidget( container , serverSettings) {
+function Server( container , serverSettings ) {
     var τ = 2 * Math.PI; 
     var _this = this;
 //    _this.container = container;
-    _this.thickness = 3;
-    _this.distance = 10;
+    _this.thickness = 1;
+    _this.distance = 5;
     _this.interval = 1500;
     _this.data = {endAngle:0.127*τ};    //data for CPU ring
     _this.data2 = {endAngle:0.127*τ};   //data for HDD ring
     _this.container = container || "";
     _this.serverSettings = serverSettings;
     _this.onalert=function(t){console.log(t)};
-    
+    _this.onProcList = function(t) {console.log(t)};
+    _this.onSocketsCreated = function(t){console.log(t);}
   
-    
-    _this.create = function(){
+    _this.createSockets = function( successHandler ) {
         _this.ws = new WebSocket( _this.serverSettings.server );  
-        _this.ws.onopen = function(){ _this.ws.send(JSON.stringify( {User:_this.serverSettings.user,Password:_this.serverSettings.password} )); };
+        _this.ws.onopen = function(){ 
+            _this.ws.send( JSON.stringify( 
+                {
+                    User:_this.serverSettings.user,
+                    Password:_this.serverSettings.password
+                })); 
+            if(_this.ws.readyState==1 && _this.onSocketsCreated) _this.onSocketsCreated();
+        };
+        
         _this.ws.onmessage = function(message) {
             //Getting JSON data from server
             var data=""
             try { data = JSON.parse(message.data); } 
             catch(e) { console.log("Error in parsing data from server\n"+message.data); return;}
             //Checking what we have
+            if ("RandomNumber" in data) { _this.data = {endAngle: data.RandomNumber/100 * τ}; _this.updateCPUring(); }
+            if ("Increment" in data) { _this.data2 = {endAngle: data.Increment/100 * τ}; _this.updateHDDring(); }
+            if ("processes" in data) { _this.onProcList(data.processes); }
+            };  
+        
+        _this.wsA = new WebSocket( _this.serverSettings.server ); //web socket for ALERTS only
+        _this.wsA.onopen = function(){ 
+            _this.wsA.send( JSON.stringify( 
+                {
+                    User:_this.serverSettings.user,
+                    Password:_this.serverSettings.password
+                })); 
+            if(_this.wsA.readyState==1 && _this.onSocketsCreated) _this.onSocketsCreated();
+        };
+        _this.wsA.onmessage = function(message) {
+            //Getting JSON data from server
+            var data=""
+            try { data = JSON.parse(message.data); } 
+            catch(e) { console.log("Error in parsing data from server\n"+message.data); return;}
+            //Checking what we have
             if ("alert" in data) { _this.onalert(data.alert) }
-            if ("CPU" in data) { _this.data = {endAngle: data.CPU/100 * τ}; _this.updateCPUring(); }
-            if ("HDD" in data) { _this.data2 = {endAngle: data.HDD/100 * τ}; _this.updateHDDring(); }
             };
         
+    };
+    _this.create = function( successHandler ){
         
+        _this.createSockets( successHandler );
     
     //
     //***********   Drawing part
@@ -112,8 +141,8 @@ _this.arcTween2 = function(transition,data) {
     });};   
 
 _this.getData = function( interval ){
-    _this.CPUupdate = window.setInterval(function(){_this.ws.send( "sensors:CPU" );},_this.interval); 
-    _this.HDDupdate = window.setInterval(function(){_this.ws.send( "sensors:HDD" );},2*_this.interval);
+    _this.CPUupdate = window.setInterval(function(){_this.ws.send( "sensors:RandomNumber" ); },_this.interval); 
+    _this.HDDupdate = window.setInterval(function(){_this.ws.send( "sensors:Increment" );  },2*_this.interval);
     };
 
 _this.updateCPUring = function(){
