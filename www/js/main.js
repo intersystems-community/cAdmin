@@ -1,4 +1,8 @@
    function script(){
+                    $("a").on("touchend", function(e){
+                        e.preventDefault();
+                        app.nav.navigate("#content",$(this).attr('href'),"fast");
+                    });
                    $("button.nav-page").on("touchend", function(){
                         app.servers.push(new Server("body", {serverName:"New server"}));
                         app.selectedServer = app.servers.length-1;

@@ -13,19 +13,24 @@ function Server( container , serverSettings ) {
     _this.onalert=function(t){console.log(t)};
     _this.onProcList = function(t) {console.log(t)};
     _this.onSocketsCreated = function(t){console.log(t);}
-  
-    _this.createSockets = function( successHandler ) {
-        _this.ws = new WebSocket( _this.serverSettings.server );  
-        _this.ws.onopen = function(){ 
-            _this.ws.send( JSON.stringify( 
+    _this.sockets=[];
+    _this.createSocket = function( msgHandler ) {
+        ws = new WebSocket( _this.serverSettings.server );  
+        ws.onopen = function(){ 
+            this.send( JSON.stringify( 
                 {
                     User:_this.serverSettings.user,
                     Password:_this.serverSettings.password
                 })); 
-            if(_this.ws.readyState==1 && _this.onSocketsCreated) _this.onSocketsCreated();
-        };
+            if(this.readyState==1 && _this.onSocketsCreated) _this.onSocketsCreated();
+        }
+        ws.onmessage = msgHandler;
+        _this.sockets.push(ws);
+    };
+    
+    _this.create = function( successHandler ){
         
-        _this.ws.onmessage = function(message) {
+       _this.createSocket( function(message) {
             //Getting JSON data from server
             var data=""
             try { data = JSON.parse(message.data); } 
@@ -34,30 +39,17 @@ function Server( container , serverSettings ) {
             if ("RandomNumber" in data) { _this.data = {endAngle: data.RandomNumber/100 * τ}; _this.updateCPUring(); }
             if ("Increment" in data) { _this.data2 = {endAngle: data.Increment/100 * τ}; _this.updateHDDring(); }
             if ("processes" in data) { _this.onProcList(data.processes); }
-            };  
+            });
         
-        _this.wsA = new WebSocket( _this.serverSettings.server ); //web socket for ALERTS only
-        _this.wsA.onopen = function(){ 
-            _this.wsA.send( JSON.stringify( 
-                {
-                    User:_this.serverSettings.user,
-                    Password:_this.serverSettings.password
-                })); 
-            if(_this.wsA.readyState==1 && _this.onSocketsCreated) _this.onSocketsCreated();
-        };
-        _this.wsA.onmessage = function(message) {
+        _this.createSocket(function(message) {
             //Getting JSON data from server
             var data=""
             try { data = JSON.parse(message.data); } 
             catch(e) { console.log("Error in parsing data from server\n"+message.data); return;}
             //Checking what we have
             if ("alert" in data) { _this.onalert(data.alert) }
-            };
+            });
         
-    };
-    _this.create = function( successHandler ){
-        
-        _this.createSockets( successHandler );
     
     //
     //***********   Drawing part
@@ -112,7 +104,7 @@ function Server( container , serverSettings ) {
         })
     .attr("text-anchor", "middle") 
     .style("font-size","1em")   
-    .attr("fill","#ccc")  
+    .attr("fill","black")  
     .style("font-family","\"Helvetica Neue\", Helvetica, Arial, sans-serif")
     .style("font-weight",100)
     .attr("dy","0.35em")
@@ -141,8 +133,8 @@ _this.arcTween2 = function(transition,data) {
     });};   
 
 _this.getData = function( interval ){
-    _this.CPUupdate = window.setInterval(function(){_this.ws.send( "sensors:RandomNumber" ); },_this.interval); 
-    _this.HDDupdate = window.setInterval(function(){_this.ws.send( "sensors:Increment" );  },2*_this.interval);
+    _this.CPUupdate = window.setInterval(function(){_this.sockets[0].send( "sensors:RandomNumber" ); },_this.interval); 
+    _this.HDDupdate = window.setInterval(function(){_this.sockets[0].send( "sensors:Increment" );  },2*_this.interval);
     };
 
 _this.updateCPUring = function(){

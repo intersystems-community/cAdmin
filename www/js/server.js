@@ -19,7 +19,7 @@ function script(){
                             $thisr.addClass(".menu-shown"); $thisr.append(page.procMenu); 
                             $thisr.find(".notshown").data("pID", $this.find("td")[0].innerHTML).removeClass(".notshown").show("fast");
                             $thisr.find(".btn").on("touchend", function(){
-                                app.servers[app.selectedServer].ws.send( "process:"+ $(this).data("action")+","+ $this.find("td")[0].innerHTML);
+                                app.servers[app.selectedServer].sockets[0].send( "process:"+ $(this).data("action")+","+ $this.find("td")[0].innerHTML);
                             });
                    }
                 });
@@ -27,19 +27,24 @@ function script(){
             };
         };
     
-    app.servers[app.selectedServer].onMetricsList = function(pList) {
-           for(i=0;i<pList.length;i++){
-               var key = Object.keys(pList[i])[0]; // {CPU:50} -> got "CPU"
+        app.servers[app.selectedServer].createSocket( function(message) {
+        var m = JSON.parse(message.data);
+            console.log(m);
+           for(var k in m){
+               console.log(k);
                var $tbody = $("#metricsTable tbody");
                $tbody.append("<tr>"+
-                            "<td>"+key+"</td>"+
-                            "<td class=\"routine\">"+pList[i][key]+"</td>"+
+                            "<td>"+k+"</td>"+
+                            "<td class=\"routine\">"+m[k]+"</td>"+
                             "</tr>");               
             };
-        };
+        });
     
     
-        app.servers[app.selectedServer].ws.send("process:List");
+    
+    
+        app.servers[app.selectedServer].sockets[0].send("process:List");
+        setTimeout(function(){ app.servers[app.selectedServer].sockets[2].send("sensors"); },1000);
         $("#sName").text(app.servers[app.selectedServer].serverSettings.serverName + " info");
         page.procMenu = "<div class=\"btn-group proc-menu notshown\">"+
   "<button type=\"button\" class=\"btn btn-default btn-sm\" data-action=\"Kill\">Kill</button>"+

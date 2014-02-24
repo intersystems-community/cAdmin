@@ -13,13 +13,21 @@ module.exports = [
         "merges": [
             "navigator.notification"
         ]
+    },
+    {
+        "file": "plugins/com.phonegap.plugin.statusbar/www/statusbar.js",
+        "id": "com.phonegap.plugin.statusbar.statusbar",
+        "clobbers": [
+            "window.StatusBar"
+        ]
     }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
 {
     "org.apache.cordova.dialogs": "0.2.6",
-    "org.apache.cordova.vibration": "0.3.7"
+    "org.apache.cordova.vibration": "0.3.7",
+    "com.phonegap.plugin.statusbar": "1.0.1"
 }
 // BOTTOM OF METADATA
 });
