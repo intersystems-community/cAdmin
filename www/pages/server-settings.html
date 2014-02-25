@@ -9,16 +9,12 @@
     <input type="text" class="form-control" id="serverName" placeholder="Enter server name">
   </div>
     <div class="form-group">
-    <label for="ip">Server IP/URL</label>
-    <input type="text" class="form-control" id="ip" placeholder="Enter server IP">
+    <label for="server">Server URL</label>
+    <input type="text" class="form-control" id="server" placeholder="Enter server IP">
   </div> 
-    <div class="form-group">
-    <label for="port">Port</label>
-    <input type="text" class="form-control" id="port" placeholder="Enter server port">
-  </div>
   <div class="form-group">
     <label for="username">Username</label>
-    <input type="text" class="form-control" id="username" placeholder="Enter username">
+    <input type="text" class="form-control" id="user" placeholder="Enter username">
   </div>
   <div class="form-group">
     <label for="password">Password</label>
@@ -26,9 +22,9 @@
   </div>
     <div class="form-group">
     <label for="auto-up">Auto update</label>
-    <input type="checkbox" class="js-switch pull-right" checked="">
+    <input type="checkbox" class="js-switch pull-right" checked="" id="aupt">
   </div>
-  <button type="submit" class="btn btn-default">Save</button>
+  <button class="btn btn-default" id="save">Save</button>
 </form>
 
 <script>

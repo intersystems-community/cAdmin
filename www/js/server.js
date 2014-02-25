@@ -27,7 +27,7 @@ function script(){
             };
         };
     
-        app.servers[app.selectedServer].createSocket( function(message) {
+        var metricsSocket = app.servers[app.selectedServer].createSocket( function(message) {
         var m = JSON.parse(message.data);
             console.log(m);
            for(var k in m){
@@ -38,13 +38,13 @@ function script(){
                             "<td class=\"routine\">"+m[k]+"</td>"+
                             "</tr>");               
             };
-        });
+        }, function(){this.send("sensors")} );
     
     
     
     
         app.servers[app.selectedServer].sockets[0].send("process:List");
-        setTimeout(function(){ app.servers[app.selectedServer].sockets[2].send("sensors"); },1000);
+        //metricsSocket.send("sensors"); 
         $("#sName").text(app.servers[app.selectedServer].serverSettings.serverName + " info");
         page.procMenu = "<div class=\"btn-group proc-menu notshown\">"+
   "<button type=\"button\" class=\"btn btn-default btn-sm\" data-action=\"Kill\">Kill</button>"+
