@@ -13,7 +13,10 @@ function saveToDb(tx) {
     var srv=$("#server").val();
     var srvName=$("#serverName").val();
     var a_update=$("#aupt").prop("checked");
-     tx.executeSql('UPDATE SERVERS VALUES ('+app.servers[app.selectedServer].serverSettings.id+', "'+srvName+'","'+user+'","'+password+'", "'+srv+'") WHERE id = '+app.servers[app.selectedServer].serverSettings.id+'');
+    var sqlText= 'UPDATE SERVERS SET serverName="'+srvName+'",user="'+user+'",password="'+password+'", server="'+srv+'" WHERE id = '+app.servers[app.selectedServer].serverSettings.id;
+    
+    console.log(sqlText);
+     tx.executeSql(sqlText);
 
         
     console.log("saved.");
