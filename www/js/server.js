@@ -1,8 +1,10 @@
 function script(){
         $(".server-menu").show("fast");
         $("button.nav-page").on("touchend",function(){ app.nav.navigate("#content",$(this).attr("href"),"fast"); });
-    
-    
+    window.page._destruct = function(){
+        metricsSocket.close();
+        delete metricsSocket;
+    };
         app.servers[app.selectedServer].onProcList = function(pList) {
            for(i=0;i<pList.length;i++){
                var $tbody = $("#processTable tbody");
@@ -42,7 +44,7 @@ function script(){
     
     
     
-    
+    //TODO: Create new socket for process:List
         app.servers[app.selectedServer].sockets[0].send("process:List");
         //metricsSocket.send("sensors"); 
         $("#sName").text(app.servers[app.selectedServer].serverSettings.serverName + " info");

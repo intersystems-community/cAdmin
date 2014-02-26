@@ -13,6 +13,7 @@ function Navigator() {
     _this.contentArea = "";
     _this.pagesDirectory = "pages";
     _this.scriptsDirectory = "js";
+    $(window).on("onbeforeunload", function(){delete window.script});
     _this.navigate = function(area, url, animate) {
         _this.contentArea = area || "document";
         delete window.script;

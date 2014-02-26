@@ -1,5 +1,5 @@
 
-function Server( container , serverSettings ) {
+function Server( serverSettings ) {
     var τ = 2 * Math.PI; 
     var _this = this;
 //    _this.container = container;
@@ -8,12 +8,23 @@ function Server( container , serverSettings ) {
     _this.interval = 1500;
     _this.data = {endAngle:0.127*τ};    //data for CPU ring
     _this.data2 = {endAngle:0.127*τ};   //data for HDD ring
-    _this.container = container || "";
+    _this.container = "";
     _this.serverSettings = serverSettings;
-    _this.onalert=function(t){console.log(t)};
     _this.onProcList = function(t) {console.log(t)};
     _this.onSocketsCreated = function(t){console.log(t);}
     _this.sockets=[];
+    
+    _this.onalert = function(m) {
+        var $console = $("#cconsole");
+        if (!$console) return;
+        var c = new Date();
+        $console.prepend("<tr class=\"notshown\">"+
+        "<td>"+getClockTime()+"</td>"+
+        "<td>"+_this.serverSettings.serverName+"</td>"+
+        "<td>"+m+"</td>"+
+        "</tr>");
+        $(".notshown").show('slow').removeClass("notshown");
+        };
     
     _this.createSocket = function( msgHandler, onCreated ) {
         ws = new WebSocket( _this.serverSettings.server );  
@@ -26,14 +37,13 @@ function Server( container , serverSettings ) {
             if(this.readyState==1 && onCreated) onCreated.call(this);
         }
         ws.onmessage = msgHandler;
-        _this.sockets.push(ws);
+        //_this.sockets.push(ws);
         return ws;
     };
     
     _this.createSockets = function(){
-        
         //Socket #1 for widget
-        _this.createSocket( function(message) {
+        _this.sockets.push( _this.createSocket( function(message) {
             //Getting JSON data from server
             var data=""
             try { data = JSON.parse(message.data); } 
@@ -43,19 +53,23 @@ function Server( container , serverSettings ) {
             if ("Increment" in data) { _this.data2 = {endAngle: data.Increment/100 * τ}; _this.updateHDDring(); }
             if ("processes" in data) { _this.onProcList(data.processes); }
             },function(){ 
-                _this.CPUupdate = window.setInterval(function(){_this.sockets[0].send( "devtools:RandomNumber" ); },_this.interval); 
-                _this.HDDupdate = window.setInterval(function(){_this.sockets[0].send( "devtools:Increment" );  },2*_this.interval);
+                var s=this;
+                if(_this.serverSettings.aupdate=="true"){
+                _this.CPUupdate = window.setInterval(function(){s.send( "devtools:RandomNumber" ); },_this.interval); 
+                _this.HDDupdate = window.setInterval(function(){s.send( "devtools:Increment" );  },2*_this.interval);
+                
                 _this.onalert("Connected");
-            });
+                }
+            }) );
         //Socket #2 for alerts
-        _this.createSocket(function(message) {
+        _this.sockets.push( _this.createSocket(function(message) {
             //Getting JSON data from server
             var data=""
             try { data = JSON.parse(message.data); } 
             catch(e) { console.log("Error in parsing data from server\n"+message.data); return;}
             //Checking what we have
              _this.onalert(data.children[0].Message);
-            },function(){ this.send("cconsole-alert"); _this.onalert("Connected");});
+            },function(){ if(_this.serverSettings.aupdate=="true"){this.send("cconsole-alert"); _this.onalert("Connected");}}) );
         
     };
     
@@ -68,6 +82,7 @@ function Server( container , serverSettings ) {
     .attr("width", $(_this.container).attr("width"))
     .attr("height",$(_this.container).attr("height"))
     .append("g")
+    .attr("fill-opacity",function(){if (_this.serverSettings.aupdate=="false") {return "0.3"} else {return 1;} })
     .attr("transform", "translate(" + $("svg").width()/2+ "," + $("svg").height()/2 + ")");
     
     //outer ring = CPU
@@ -141,12 +156,6 @@ _this.arcTween2 = function(transition,data) {
     var interpolate = d3.interpolate(d.endAngle, _this.data2.endAngle);
     return function(t) { d.endAngle = interpolate(t);return _this.arc2(d); };       
     });};   
-
-//_this.getData = function( interval ){
-//    _this.CPUupdate = window.setInterval(function(){_this.sockets[0].send( "sensors:RandomNumber" ); },_this.interval); 
-//    _this.HDDupdate = window.setInterval(function(){_this.sockets[0].send( "sensors:Increment" );  },2*_this.interval);
-////    _this.sockets[1].send("test");
-//    };
 
 _this.updateCPUring = function(){
     var newColor="rgb("+(_this.data.endAngle.toFixed(0)*40)+", "+(255-_this.data.endAngle.toFixed(0)*20)+", 0)";
