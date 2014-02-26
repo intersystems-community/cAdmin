@@ -12,7 +12,7 @@ function App(){
 }
 
 var app = new App();
-
+app.localization = new Localization();
 //
 //************  Function for DB interaction
 //
