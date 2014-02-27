@@ -5,6 +5,11 @@ function script(){
         metricsSocket.close();
         delete metricsSocket;
     };
+    
+    
+    $("#docs").attr("href","http://"+app.servers[app.selectedServer].serverSettings.server.match(/wss?:\/\/([^\/]+)/)[1]+"/csp/docbook/DocBook.UI.Page.cls");
+    
+    
         app.servers[app.selectedServer].onProcList = function(pList) {
            for(i=0;i<pList.length;i++){
                var $tbody = $("#processTable tbody");
@@ -46,7 +51,6 @@ function script(){
     
     //TODO: Create new socket for process:List
         app.servers[app.selectedServer].sockets[0].send("process:List");
-        //metricsSocket.send("sensors"); 
         $("#sName").text(app.servers[app.selectedServer].serverSettings.serverName + " info");
         page.procMenu = "<div class=\"btn-group proc-menu notshown\">"+
   "<button type=\"button\" class=\"btn btn-default btn-sm\" data-action=\"Kill\">Kill</button>"+

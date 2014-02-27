@@ -14,17 +14,19 @@ function Navigator() {
     _this.pagesDirectory = "pages";
     _this.scriptsDirectory = "js";
     $(window).on("onbeforeunload", function(){delete window.script});
+    
     _this.navigate = function(area, url, animate) {
         _this.contentArea = area || "document";
         delete window.script;
         if (window.page && page._destruct) page._destruct();
         if (animate) $(_this.contentArea).hide();
+        $(_this.contentArea+" >").remove();
         $(_this.contentArea).load("/"+_this.pagesDirectory+"/"+url, function(){
             
            if(animate) $(_this.contentArea).show(animate);
             $.getScript("/"+_this.scriptsDirectory+"/"+url.match(/(.*)\.html/)[1]+".js", function(){
             if ("script" in window) { window.page={};window.page.script = new script(); }
-                app.localization.localize("body", "ru-RU");
+                app.localization.localize("body", app.locale);
             });
         });
     }
