@@ -6,6 +6,25 @@
 body {
   padding-top: 50px;
 }
+
+.spinner{
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    background:rgba(0,0,0,0.2);
+/*    background-image: url("../img/spinner.gif");*/
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    padding: 20% 50%;
+}
+
+.spinner img{
+    height:5em;
+    width: 5em;
+}
+.collapsing {  transition: height 0.01s !important; }
 h3{
 /*    float:right;*/
     margin-top:2em !important;

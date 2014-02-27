@@ -1,11 +1,17 @@
 function script(){
     $(".server-menu").show("fast");
-    $("button.nav-page").on("touchend",function(){ 
+    $("button.nav-page").on("touchend click",function(){ 
             app.nav.navigate("#content",$(this).attr("href"),"fast"); 
         });
+    
+    
     window.page._destruct = function(){
-        metricsSocket.close();
-        delete metricsSocket;
+        page.metricsSocket.send("exit");
+        page.metricsSocket.close();
+        page.DBSocket.send("exit");
+        page.DBSocket.close()
+        delete page.metricsSocket;
+        delete page.DBSocket;
     };
     
     
@@ -19,15 +25,16 @@ function script(){
                             "<td>"+pList[i].id+"</td>"+
                             "<td class=\"routine\">"+pList[i].routine+"</td>"+
                             "</tr>");
-               $tbody.find("tr").last().on("touchend", function(){ 
+               $tbody.find("tr").last().on("touchend click", function(e){ 
                    $tbody.find(".proc-menu").remove();
+                   e.preventDefault();
                     var $this =  $(this),
                         $thisr = $this.find(".routine");
                    if(($thisr).hasClass(".menu-shown")) { $thisr.removeClass(".menu-shown"); $thisr.find(".btn-group").remove(); }
                    else {
                             $thisr.addClass(".menu-shown"); $thisr.append(page.procMenu); 
                             $thisr.find(".notshown").data("pID", $this.find("td")[0].innerHTML).removeClass(".notshown").show("fast");
-                            $thisr.find(".btn").on("touchend", function(){
+                            $thisr.find(".btn").on("touchend click", function(){
                                 app.servers[app.selectedServer].sockets[0].send( "process:"+ $(this).data("action")+","+ $this.find("td")[0].innerHTML);
                             });
                    }
@@ -36,7 +43,7 @@ function script(){
             };
         };
     
-        var metricsSocket = app.servers[app.selectedServer].createSocket( function(message) {
+        page.metricsSocket = app.servers[app.selectedServer].createSocket( function(message) {
         var m = JSON.parse(message.data);
             console.log(m);
            for(var k in m){
@@ -49,15 +56,15 @@ function script(){
             };
         }, function(){this.send("sensors")} );
     
-    var DBSocket = app.servers[app.selectedServer].createSocket( function(message) {
+    page.DBSocket = app.servers[app.selectedServer].createSocket( function(message) {
         var m = JSON.parse(message.data);
             console.log(m);
             var $tbody = $("#dbtable");
            for(i=0;i<m.Databases.length;i++){
-               console.log(k);
-               var dbName="db"+i;
+               //console.log(k);
+               var dbName=m.Databases[i].Name;
                var dbInfo="";
-               for(var k in m.Databases[i]){ dbInfo+="<p>"+k+": "+m.Databases[i][k]; }
+               for(var k in m.Databases[i]){ if(k=="Name") continue; dbInfo+="<p>"+k+": "+m.Databases[i][k]+"</p>"; }
                $tbody.append('<div class="panel panel-default">'+
                                 '<div class="panel-heading" ontouchend="$(this).find(\'a\').click()">'+
                                 '<h4 class="panel-title">'+
@@ -73,7 +80,7 @@ function script(){
                                 '</div>'+
                                 '</div>');
             };
-        }, function(){this.send("db")} );
+        }, function(){console.log("send message DB to server");this.send("db")} );
     
     
     

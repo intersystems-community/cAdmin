@@ -1,32 +1,32 @@
 
 <button type="button" href="main.html" class="btn btn-default nav-page">
     <span class="glyphicon glyphicon-circle-arrow-left pull-left"></span>
-    Back
+    <span locId="Back">Back</span>
 </button>
 
 <button type="button" href="server-settings.html" class="btn btn-default nav-page" style="float:right">
     <span class="glyphicon glyphicon-cog"></span>
-    Settings
+    <span locId="Settings">Settings</span>
 </button>
 
 <h3 class="page-header">
     <span id="sName"></span>
 </h3>
 
-<h4>Server Metrics</h4>
+<h4 locId="Server Metrics">Server Metrics</h4>
 
 <div class="table-responsive overflow-scroll">
 <table class="table table-striped" id="metricsTable">
     <thead>
-        <th>Metric</th>
-        <th>Value</th>
+        <th locId="Metric">Metric</th>
+        <th locId="Value">Value</th>
     </thead>
     <tbody>
     </tbody>
 </table>
 </div>
 
-<h4>Process Manager</h4>
+<h4 locId="Process Manager">Process Manager</h4>
 
 <div class="table-responsive overflow-scroll">
 <table class="table table-striped" id="processTable">
@@ -40,4 +40,9 @@
 </div>
 
 
+      
+<h4 locId="Databases Info">Databases Info</h4>     
+<div class="panel-group" id="dbtable">
+  
+</div>
 

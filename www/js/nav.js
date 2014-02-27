@@ -21,10 +21,10 @@ function Navigator() {
         if (window.page && page._destruct) page._destruct();
         if (animate) $(_this.contentArea).hide();
         $(_this.contentArea+" >").remove();
-        $(_this.contentArea).load("/"+_this.pagesDirectory+"/"+url, function(){
+        $(_this.contentArea).load(""+_this.pagesDirectory+"/"+url, function(){
             
            if(animate) $(_this.contentArea).show(animate);
-            $.getScript("/"+_this.scriptsDirectory+"/"+url.match(/(.*)\.html/)[1]+".js", function(){
+            $.getScript(""+_this.scriptsDirectory+"/"+url.match(/(.*)\.html/)[1]+".js", function(){
             if ("script" in window) { window.page={};window.page.script = new script(); }
                 app.localization.localize("body", app.locale);
             });

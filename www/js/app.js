@@ -24,11 +24,8 @@ function populateDB(tx) {
 
     
     tx.executeSql('CREATE TABLE IF NOT EXISTS SERVERS (id unique, serverName, user, password, server, aupdate)');
-    tx.executeSql('INSERT INTO SERVERS (id, serverName,user,password,server, aupdate) VALUES (0, "Predictive","root","zckKqko12", "ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls", "false")');
-     tx.executeSql('INSERT INTO SERVERS (id, serverName,user,password,server,aupdate) VALUES (1, "REST","root","zckKqko12", "ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls", "true")');
-     tx.executeSql('INSERT INTO SERVERS (id, serverName,user,password,server,aupdate) VALUES (2, "Pentagon","root","zckKqko12", "ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls", "true")');
-     tx.executeSql('INSERT INTO SERVERS (id, serverName,user,password,server,aupdate) VALUES (3, "4","root","zckKqko12", "ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls", "true")');
-     tx.executeSql('INSERT INTO SERVERS (id, serverName,user,password,server,aupdate) VALUES (4, "5","root","zckKqko12", "ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls", "true")');
+    tx.executeSql('INSERT INTO SERVERS (id, serverName,user,password,server, aupdate) VALUES (0, "Glossary(OFF)","cAdminUser","fg345hdgtjkb", "ws://glossary.intersystems.ru/csp/cAdmin/cAdmin.WebSocket.cls", "false")');
+     tx.executeSql('INSERT INTO SERVERS (id, serverName,user,password,server,aupdate) VALUES (1, "Glossary(On)","cAdminUser","fg345hdgtjkb", "ws://glossary.intersystems.ru/csp/cAdmin/cAdmin.WebSocket.cls", "true")');
     $(window).trigger("DBConnected");
     console.log("SQL Table created.");
 }
@@ -55,6 +52,7 @@ function LoadAppSettings(){
             window.app.locale=m.rows.item(0).localeName;
             console.log('settings loaded');
             $(window).trigger("AppReady");
+            $(".spinner").hide();
             //$(window).trigger("AppReady");
         },function(t,m) {console.log(m)})
     })
@@ -63,6 +61,10 @@ function LoadAppSettings(){
 app.servers = [];
 app.nav = new Navigator();
     $(window).one("AppReady",function(){
+        $("a.nav-page").on("touchend click", function(e){
+           e.preventDefault();
+           app.nav.navigate("#content",$(this).attr('href'),"fast");
+           });
         app.nav.navigate("#content","main.html");
     });
 
@@ -73,8 +75,6 @@ if(app.db) {
         app.db.transaction(populateDB, errorSQL);
     } else {
         console.log("error");}
-
-
 
 
 

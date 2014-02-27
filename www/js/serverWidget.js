@@ -54,7 +54,7 @@ function Server( serverSettings ) {
             if ("processes" in data) { _this.onProcList(data.processes); }
             },function(){ 
                 var s=this;
-                if(_this.serverSettings.aupdate=="true"){
+                if(_this.serverSettings.aupdate!="false"){
                 _this.CPUupdate = window.setInterval(function(){s.send( "devtools:RandomNumber" ); },_this.interval); 
                 _this.HDDupdate = window.setInterval(function(){s.send( "devtools:Increment" );  },2*_this.interval);
                 
@@ -82,7 +82,7 @@ function Server( serverSettings ) {
     .attr("width", $(_this.container).attr("width"))
     .attr("height",$(_this.container).attr("height"))
     .append("g")
-    .attr("fill-opacity",function(){if (_this.serverSettings.aupdate=="false") {return "0.3"} else {return 1;} })
+    .attr("fill-opacity",function(){if ( _this.serverSettings.aupdate.toString()!="true" ) {return "0.3"} else {return "1";} })
     .attr("transform", "translate(" + $("svg").width()/2+ "," + $("svg").height()/2 + ")");
     
     //outer ring = CPU
