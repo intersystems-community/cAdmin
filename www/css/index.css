@@ -8,9 +8,11 @@ body {
 }
 h3{
 /*    float:right;*/
-    margin-top:20px !important;
+    margin-top:2em !important;
 }
-
+h4{
+margin-top: 2em;
+}
 /*
  * Global add-ons
  */

@@ -49,7 +49,6 @@ function InitServers(){
 };
 function LoadAppSettings(){
  app.db.transaction(function(t){
- app.db.transaction(function(t){
         t.executeSql('CREATE TABLE IF NOT EXISTS APPLICATION (localeName)');
         t.executeSql('INSERT INTO APPLICATION (localeName) VALUES ("en-US")');
         t.executeSql("SELECT * FROM APPLICATION",[], function(t,m) {
@@ -60,9 +59,10 @@ function LoadAppSettings(){
         },function(t,m) {console.log(m)})
     })
 }
+                    
 app.servers = [];
 app.nav = new Navigator();
-    $(window).one("ServersReady",function(){
+    $(window).one("AppReady",function(){
         app.nav.navigate("#content","main.html");
     });
 

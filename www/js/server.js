@@ -1,6 +1,8 @@
 function script(){
-        $(".server-menu").show("fast");
-        $("button.nav-page").on("touchend",function(){ app.nav.navigate("#content",$(this).attr("href"),"fast"); });
+    $(".server-menu").show("fast");
+    $("button.nav-page").on("touchend",function(){ 
+            app.nav.navigate("#content",$(this).attr("href"),"fast"); 
+        });
     window.page._destruct = function(){
         metricsSocket.close();
         delete metricsSocket;
@@ -46,6 +48,33 @@ function script(){
                             "</tr>");               
             };
         }, function(){this.send("sensors")} );
+    
+    var DBSocket = app.servers[app.selectedServer].createSocket( function(message) {
+        var m = JSON.parse(message.data);
+            console.log(m);
+            var $tbody = $("#dbtable");
+           for(i=0;i<m.Databases.length;i++){
+               console.log(k);
+               var dbName="db"+i;
+               var dbInfo="";
+               for(var k in m.Databases[i]){ dbInfo+="<p>"+k+": "+m.Databases[i][k]; }
+               $tbody.append('<div class="panel panel-default">'+
+                                '<div class="panel-heading" ontouchend="$(this).find(\'a\').click()">'+
+                                '<h4 class="panel-title">'+
+                                '<a data-toggle="collapse" data-parent="#dbtable" href="#collapse'+i+'">'+
+                                dbName+
+                                '</a>'+
+                                '</h4>'+
+                                '</div>'+
+                                '<div id="collapse'+i+'" class="panel-collapse collapse">'+
+                                '<div class="panel-body">'+
+                                dbInfo+
+                                '</div>'+
+                                '</div>'+
+                                '</div>');
+            };
+        }, function(){this.send("db")} );
+    
     
     
     
