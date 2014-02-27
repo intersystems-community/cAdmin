@@ -24,7 +24,7 @@ function Navigator() {
            if(animate) $(_this.contentArea).show(animate);
             $.getScript("/"+_this.scriptsDirectory+"/"+url.match(/(.*)\.html/)[1]+".js", function(){
             if ("script" in window) { window.page={};window.page.script = new script(); }
-                localization.localize("body", "ru-RU");
+                app.localization.localize("body", "ru-RU");
             });
         });
     }
