@@ -3,8 +3,8 @@ function Server( serverSettings ) {
     var τ = 2 * Math.PI; 
     var _this = this;
 //    _this.container = container;
-    _this.thickness = 1;
-    _this.distance = 5;
+    _this.thickness = 5;
+    _this.distance = 10;
     _this.interval = 1500;
     _this.data = {endAngle:0.127*τ};    //data for CPU ring
     _this.data2 = {endAngle:0.127*τ};   //data for HDD ring
@@ -87,14 +87,14 @@ function Server( serverSettings ) {
     
     //outer ring = CPU
      _this.arc = d3.svg.arc()
-    .innerRadius($(_this.container).width()/Math.PI-_this.thickness)
-    .outerRadius($(_this.container).width()/Math.PI)
+    .innerRadius($(_this.container).width()/2.5-_this.thickness)
+    .outerRadius($(_this.container).width()/2.5)
     .startAngle(0);
     
     //inner ring = HDD
     _this.arc2 = d3.svg.arc()
-    .innerRadius($(_this.container).width()/Math.PI - _this.distance-2*_this.thickness)
-    .outerRadius($(_this.container).width()/Math.PI - _this.distance-_this.thickness)
+    .innerRadius($(_this.container).width()/2.5 - _this.distance-2*_this.thickness)
+    .outerRadius($(_this.container).width()/2.5 - _this.distance-_this.thickness)
     .startAngle(0);
             
     // Add the background arc for CPU, from 0 to 100% (τ).
