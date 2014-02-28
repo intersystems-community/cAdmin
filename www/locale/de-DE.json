@@ -28,5 +28,8 @@
 	"Save" : "Sparen",
     "Databases Info" :"Databases Info",
     "Application Settings" :"Anwendungseinstellungen" ,
-    "Language":"Sprache"
+    "Language":"Sprache",
+    "Web Terminal":"Web-Terminal",
+    "Management Portal":"Management Portal",
+    "Documentation":"Dokumentation"
 }

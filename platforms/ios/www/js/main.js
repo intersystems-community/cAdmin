@@ -39,7 +39,7 @@
        //Creating widgets
         for(i=0;i<window.app.servers.length;i++) {
                 if ($(".widget-area").find("#widget"+i)[0]!=undefined) continue;
-               $(".widget-area").append("<div class=\"widget\" id=\"widget"+i+"\" width=250 height=250></div>");
+               $(".widget-area").append("<div class=\"widget\" id=\"widget"+i+"\" width=300 height=300></div>");
                window.app.servers[i].container="#widget"+i;
                window.app.servers[i].create();
         }

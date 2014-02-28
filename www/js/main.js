@@ -10,7 +10,7 @@
            app.nav.navigate("#content",$(this).attr('href'),"fast");
            });
        
-       $("button.nav-page").on("touchend click", function(){
+       $("#createServer").on("touchend click", function(){
            CreateServer();
            app.servers.push( new Server({id:app.servers.length, serverName:"New Server", user:"root", password:"zckKqko12", server:"ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls"}) );
            app.selectedServer = app.servers.length-1;

@@ -27,7 +27,9 @@ function Server( serverSettings ) {
         };
     
     _this.createSocket = function( msgHandler, onCreated ) {
-        ws = new WebSocket( _this.serverSettings.server );  
+        var ws="";
+       try{ ws = new WebSocket( _this.serverSettings.server );  } 
+        catch(e){console.log(e);return;}
         ws.onopen = function(){ 
             this.send( JSON.stringify( 
                 {
