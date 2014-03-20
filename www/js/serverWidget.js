@@ -137,6 +137,23 @@ function Server( serverSettings ) {
     .attr("dy","0.35em")
     .text(_this.serverSettings.serverName); 
     
+        //WSS icon
+    _this.svg.append("svg:image")                                   
+    .attr("transform", function() {         
+        return "translate(0,0)"; 
+        })
+    .style("display", function(){ 
+        if ( _this.sockets[0] && _this.sockets[0].url.match(/wss:\/\//) ){
+            return "";
+        }
+        return "none";
+    })
+    .attr("xlink:href", "img/wss.png")
+    .attr("x", "60")
+    .attr("y", "60")
+    .attr("width", "20")
+    .attr("height", "20");
+    
     //CPU RING label
     _this.svg.append("svg:text")                                   
     .attr("transform", function(d,i) {  
