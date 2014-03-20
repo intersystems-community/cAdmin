@@ -78,4 +78,4 @@ if(app.db) {
     } else {
         console.log("error");}
 $("*").on("touchend",function(){$(this).trigger("click")});
-$(".navbar-right li").on("touchend",function(){ $(this).find("a").trigger("touchend");})
+//$(".navbar-right li").on("touchend",function(){ $(this).find("a").trigger("touchend");})

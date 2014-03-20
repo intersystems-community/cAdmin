@@ -7,7 +7,10 @@ function LoadSettings(){
             $("#"+k).val(app.servers[app.selectedServer].serverSettings[k]);
        }
 }
-        LoadSettings();
+        try{
+            LoadSettings();
+        }
+        catch(e){console.log(e);}
         $("#sName").text(app.servers[app.selectedServer].serverSettings.serverName + " settings");
 
         page.switch = new Switchery( $(".js-switch")[0] );
@@ -50,9 +53,25 @@ function saveToDb(tx) {
     console.log("saved.");
     app.nav.navigate("#content","main.html","fast"); 
 }
-
+function deleteServer(tx){
+    var id=app.servers[app.selectedServer].serverSettings.id;
+    var sqlText = "DELETE FROM SERVERS WHERE id="+id;
+    //for(var i=0;i<app.servers[app.selectedServer].sockets.length;i++){app.servers[app.selectedServer].sockets[i].close();}
+    app.servers.splice(id,1);
+    tx.executeSql(sqlText);
+    
+    console.log("Successfully deleted server");
+    alert("Succesfully deleted server!");
+    app.nav.navigate("#content","main.html","fast");
+}
+    
+    
     $("#back").on("touchend click", function(e){
         e.preventDefault();
         app.db.transaction(saveToDb, function(m){console.log(m)});
+    });
+    $("#delete").on("touchend click",function(e){
+        e.preventDefault();
+        app.db.transaction(deleteServer,function(m){console.log(m)});
     });
 }

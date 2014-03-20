@@ -136,6 +136,40 @@ function Server( serverSettings ) {
     .style("font-weight",100)
     .attr("dy","0.35em")
     .text(_this.serverSettings.serverName); 
+    
+    //CPU RING label
+    _this.svg.append("svg:text")                                   
+    .attr("transform", function(d,i) {  
+        var c = _this.arc.centroid({innerRadius:"0px", outerRadius:"50px", startAngle:0, endAngle:0});
+        console.log(c);
+        //console.log(_this.arc.innerRadius());
+        //window.arc = _this.arc;
+        return "translate(" + (c[0]) + "," + (c[1]) + ")";    
+        })
+    .attr("text-anchor", "middle") 
+    .style("font-size","0.5em")   
+    .attr("fill","black")  
+    .style("font-family","\"Helvetica Neue\", Helvetica, Arial, sans-serif")
+    .style("font-weight",400)
+    .attr("dy","0.35em")
+    .text("CPU"); 
+        
+        //HDD RING label
+    _this.svg.append("svg:text")                                   
+    .attr("transform", function(d,i) {  
+        var c = _this.arc2.centroid({innerRadius:"0px", outerRadius:"50px", startAngle:0, endAngle:0});
+        console.log(c);
+        //console.log(_this.arc.innerRadius());
+        //window.arc = _this.arc;
+        return "translate(" + (c[0]) + "," + (c[1]) + ")";    
+        })
+    .attr("text-anchor", "middle") 
+    .style("font-size","0.5em")   
+    .attr("fill","black")  
+    .style("font-family","\"Helvetica Neue\", Helvetica, Arial, sans-serif")
+    .style("font-weight",400)
+    .attr("dy","0.35em")
+    .text("HDD"); 
             //successHandler();
     
 };

@@ -6,7 +6,12 @@
 body {
   padding-top: 50px;
 }
-
+.btn-danger :active {
+background-color: red !important;
+}
+.btn-danger :focus {
+background-color: red !important;
+}
 .spinner{
     position:fixed;
     top:0;

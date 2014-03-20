@@ -12,7 +12,7 @@
        
        $("#createServer").on("touchend click", function(){
            CreateServer();
-           app.servers.push( new Server({id:app.servers.length, serverName:"New Server", user:"root", password:"zckKqko12", server:"ws://37.139.4.54:57773/csp/cAdmin-Server/cAdmin.WebSocket.cls"}) );
+           app.servers.push( new Server({id:app.servers.length, serverName:"New Server", user:"root", password:"zckKqko12", server:"ws://37.139.4.54:57773/csp/cAdmin/cAdmin.WebSocket.cls"}) );
            app.selectedServer = app.servers.length-1;
            app.nav.navigate("#content","server-settings.html","fast");
                    });

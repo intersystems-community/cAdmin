@@ -27,7 +27,9 @@ function Server( serverSettings ) {
         };
     
     _this.createSocket = function( msgHandler, onCreated ) {
-        ws = new WebSocket( _this.serverSettings.server );  
+        var ws="";
+       try{ ws = new WebSocket( _this.serverSettings.server );  } 
+        catch(e){console.log(e);return;}
         ws.onopen = function(){ 
             this.send( JSON.stringify( 
                 {
@@ -49,13 +51,13 @@ function Server( serverSettings ) {
             try { data = JSON.parse(message.data); } 
             catch(e) { console.log("Error in parsing data from server\n"+message.data); return;}
             //Checking what we have
-            if ("RandomNumber" in data) { _this.data = {endAngle: data.RandomNumber/100 * τ}; _this.updateCPUring(); }
+            if ("CPU" in data) { _this.data = {endAngle: data.CPU/100 * τ}; _this.updateCPUring(); }
             if ("Increment" in data) { _this.data2 = {endAngle: data.Increment/100 * τ}; _this.updateHDDring(); }
             if ("processes" in data) { _this.onProcList(data.processes); }
             },function(){ 
                 var s=this;
                 if(_this.serverSettings.aupdate!="false"){
-                _this.CPUupdate = window.setInterval(function(){s.send( "devtools:RandomNumber" ); },_this.interval); 
+                _this.CPUupdate = window.setInterval(function(){s.send( "Sensors:CPU" ); },_this.interval);
                 _this.HDDupdate = window.setInterval(function(){s.send( "devtools:Increment" );  },2*_this.interval);
                 
                 _this.onalert("Connected");

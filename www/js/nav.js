@@ -29,5 +29,6 @@ function Navigator() {
                 app.localization.localize("body", app.locale);
             });
         });
+        return false;
     }
 }

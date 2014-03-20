@@ -28,5 +28,8 @@
 	"Save" : "Сохранить",
     "Databases Info" :"Информация о базах данных",
     "Application Settings" :"Настройки приложения",
-    "Language":"Язык"
+    "Language":"Язык",
+    "Web Terminal":"Веб терминал",
+    "Management Portal":"Портал управления",
+    "Documentation":"Документация"
 }

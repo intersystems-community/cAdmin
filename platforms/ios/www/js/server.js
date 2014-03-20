@@ -6,6 +6,7 @@ function script(){
     
     
     window.page._destruct = function(){
+        if (!(page.metricsSocket && page.DBSocket)){ return; }
         page.metricsSocket.send("exit");
         page.metricsSocket.close();
         page.DBSocket.send("exit");
@@ -16,8 +17,8 @@ function script(){
     
     page.serverLink = "http://"+app.servers[app.selectedServer].serverSettings.server.match(/wss?:\/\/([^\/]+)/)[1];
     $("#docs").on("touchend click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/docbook/DocBook.UI.Page.cls", "_blank")});
-    $("#webterm").on("touchend click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/docbook/DocBook.UI.Page.cls", "_blank")});
-    $("#mportal").on("touchend click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/docbook/DocBook.UI.Page.cls", "_blank")});
+    $("#webterm").on("touchend click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/WebTerminal/index.csp", "_blank")});
+    $("#mportal").on("touchend click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/UtilHome.csp", "_blank")});
     
         app.servers[app.selectedServer].onProcList = function(pList) {
            for(i=0;i<pList.length;i++){

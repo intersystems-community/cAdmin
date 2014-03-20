@@ -25,7 +25,7 @@ function populateDB(tx) {
     
     tx.executeSql('CREATE TABLE IF NOT EXISTS SERVERS (id unique, serverName, user, password, server, aupdate)');
     tx.executeSql('INSERT INTO SERVERS (id, serverName,user,password,server, aupdate) VALUES (0, "Glossary","cAdminUser","fg345hdgtjkb", "ws://glossary.intersystems.ru/csp/cAdmin/cAdmin.WebSocket.cls", "true")');
-    tx.executeSql('INSERT INTO SERVERS (id, serverName,user,password,server, aupdate) VALUES (1, "$TC","_SYSTEM","zckKqko12", "ws://146.185.172.47:57772/csp/user/cAdmin.WebSocket.cls", "true")');
+    tx.executeSql('INSERT INTO SERVERS (id, serverName,user,password,server, aupdate) VALUES (1, "STC","_SYSTEM","zckKqko12", "ws://146.185.172.47:57772/csp/user/cAdmin.WebSocket.cls", "true")');
     tx.executeSql('INSERT INTO SERVERS (id, serverName,user,password,server, aupdate) VALUES (2, "Predictive","root","zckKqko12", "ws://37.139.4.54:57773/csp/cAdmin/cAdmin.WebSocket.cls", "true")');
 
     $(window).trigger("DBConnected");
@@ -78,4 +78,4 @@ if(app.db) {
     } else {
         console.log("error");}
 $("*").on("touchend",function(){$(this).trigger("click")});
-$(".navbar-right li").on("touchend",function(){ $(this).find("a").trigger("touchend");})
+//$(".navbar-right li").on("touchend",function(){ $(this).find("a").trigger("touchend");})
