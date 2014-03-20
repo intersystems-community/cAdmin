@@ -51,13 +51,13 @@ function Server( serverSettings ) {
             try { data = JSON.parse(message.data); } 
             catch(e) { console.log("Error in parsing data from server\n"+message.data); return;}
             //Checking what we have
-            if ("CPU" in data) { _this.data = {endAngle: data.CPU/100 * τ}; _this.updateCPUring(); }
+            if ("RandomNumber" in data) { _this.data = {endAngle: data.RandomNumber/100 * τ}; _this.updateCPUring(); }
             if ("Increment" in data) { _this.data2 = {endAngle: data.Increment/100 * τ}; _this.updateHDDring(); }
             if ("processes" in data) { _this.onProcList(data.processes); }
             },function(){ 
                 var s=this;
                 if(_this.serverSettings.aupdate!="false"){
-                _this.CPUupdate = window.setInterval(function(){s.send( "Sensors:CPU" ); },_this.interval);
+                _this.CPUupdate = window.setInterval(function(){s.send( "devtools:RandomNumber" ); },_this.interval); 
                 _this.HDDupdate = window.setInterval(function(){s.send( "devtools:Increment" );  },2*_this.interval);
                 
                 _this.onalert("Connected");
@@ -136,6 +136,57 @@ function Server( serverSettings ) {
     .style("font-weight",100)
     .attr("dy","0.35em")
     .text(_this.serverSettings.serverName); 
+    
+        //WSS icon
+    _this.svg.append("svg:image")                                   
+    .attr("transform", function() {         
+        return "translate(0,0)"; 
+        })
+    .style("display", function(){ 
+        if ( _this.sockets[0] && _this.sockets[0].url.match(/wss:\/\//) ){
+            return "";
+        }
+        return "none";
+    })
+    .attr("xlink:href", "img/wss.png")
+    .attr("x", "60")
+    .attr("y", "60")
+    .attr("width", "20")
+    .attr("height", "20");
+    
+    //CPU RING label
+    _this.svg.append("svg:text")                                   
+    .attr("transform", function(d,i) {  
+        var c = _this.arc.centroid({innerRadius:"0px", outerRadius:"50px", startAngle:0, endAngle:0});
+        console.log(c);
+        //console.log(_this.arc.innerRadius());
+        //window.arc = _this.arc;
+        return "translate(" + (c[0]) + "," + (c[1]) + ")";    
+        })
+    .attr("text-anchor", "middle") 
+    .style("font-size","0.5em")   
+    .attr("fill","black")  
+    .style("font-family","\"Helvetica Neue\", Helvetica, Arial, sans-serif")
+    .style("font-weight",400)
+    .attr("dy","0.35em")
+    .text("CPU"); 
+        
+        //HDD RING label
+    _this.svg.append("svg:text")                                   
+    .attr("transform", function(d,i) {  
+        var c = _this.arc2.centroid({innerRadius:"0px", outerRadius:"50px", startAngle:0, endAngle:0});
+        console.log(c);
+        //console.log(_this.arc.innerRadius());
+        //window.arc = _this.arc;
+        return "translate(" + (c[0]) + "," + (c[1]) + ")";    
+        })
+    .attr("text-anchor", "middle") 
+    .style("font-size","0.5em")   
+    .attr("fill","black")  
+    .style("font-family","\"Helvetica Neue\", Helvetica, Arial, sans-serif")
+    .style("font-weight",400)
+    .attr("dy","0.35em")
+    .text("HDD"); 
             //successHandler();
     
 };
