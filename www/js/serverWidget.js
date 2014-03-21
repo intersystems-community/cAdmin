@@ -54,6 +54,7 @@ function Server( serverSettings ) {
             if ("RandomNumber" in data) { _this.data = {endAngle: data.RandomNumber/100 * τ}; _this.updateCPUring(); }
             if ("Increment" in data) { _this.data2 = {endAngle: data.Increment/100 * τ}; _this.updateHDDring(); }
             if ("processes" in data) { _this.onProcList(data.processes); }
+            //_this.onalert(data); 
             },function(){ 
                 var s=this;
                 if(_this.serverSettings.aupdate!="false"){

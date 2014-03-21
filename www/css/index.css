@@ -138,3 +138,7 @@ table .overflow-scroll{
 .placeholder img {
   border-radius: 50%;
 }
+
+.widget-area {
+    margin: 0 auto;
+}

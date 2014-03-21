@@ -11,5 +11,5 @@
      }
      //$("#save").on("click",SaveToDB);
      $("#back").off();
-     $("#back").one("touchend click", SaveToDB);
+     $("#back").one("tap click", SaveToDB);
  };

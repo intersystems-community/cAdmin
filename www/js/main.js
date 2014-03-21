@@ -5,12 +5,12 @@
                tx.executeSql('INSERT INTO SERVERS (id, serverName,user,password,server,aupdate) VALUES ('+newId+', "New Server","","", "", "true")');
            }, function(m){console.log(m)});
        }
-       $("a.nav-page").on("touchend click", function(e){
+       $("a.nav-page").on("tap click", function(e){
            e.preventDefault();
            app.nav.navigate("#content",$(this).attr('href'),"fast");
            });
        
-       $("#createServer").on("touchend click", function(){
+       $("#createServer").on("tap click", function(){
            CreateServer();
            app.servers.push( new Server({id:app.servers.length, serverName:"New Server", user:"root", password:"zckKqko12", server:"ws://37.139.4.54:57773/csp/cAdmin/cAdmin.WebSocket.cls"}) );
            app.selectedServer = app.servers.length-1;
@@ -27,7 +27,7 @@
                    };
        
        $(window).one("WidgetsCreated", function(){
-           $(".widget").on("touchend click", function(){ 
+           $(".widget").on("tap click", function(){ 
                app.selectedServer = $(this).attr("id").match(/widget(.)/)[1]; 
                app.nav.navigate("#content","server.html","fast"); 
             });

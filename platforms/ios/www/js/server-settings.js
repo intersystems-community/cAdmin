@@ -66,11 +66,11 @@ function deleteServer(tx){
 }
     
     
-    $("#back").on("touchend click", function(e){
+    $("#back").on("tap click", function(e){
         e.preventDefault();
         app.db.transaction(saveToDb, function(m){console.log(m)});
     });
-    $("#delete").on("touchend click",function(e){
+    $("#delete").on("tap click",function(e){
         e.preventDefault();
         app.db.transaction(deleteServer,function(m){console.log(m)});
     });

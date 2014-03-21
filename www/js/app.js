@@ -63,7 +63,7 @@ function LoadAppSettings(){
 app.servers = [];
 app.nav = new Navigator();
     $(window).one("AppReady",function(){
-        $("a.nav-page").on("touchend click", function(e){
+        $("a.nav-page").on("tap click", function(e){
            e.preventDefault();
            app.nav.navigate("#content",$(this).attr('href'),"fast");
            });
@@ -77,5 +77,5 @@ if(app.db) {
         app.db.transaction(populateDB, errorSQL);
     } else {
         console.log("error");}
-$("*").on("touchend",function(){$(this).trigger("click")});
-//$(".navbar-right li").on("touchend",function(){ $(this).find("a").trigger("touchend");})
+$("*").on("tap",function(){$(this).trigger("click")});
+//$(".navbar-right li").on("tap",function(){ $(this).find("a").trigger("tap");})

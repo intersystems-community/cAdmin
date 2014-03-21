@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <script src="http://code.jquery.com/jquery-2.1.0.js"></script>
+        <script src="js/jquery.tap.min.js"></script>
+    </head>
+<body>
+    <div id="zone" width=200 height=200 style="background: #ccc">123</div>
+    <script>
+//    $("#zone").on("touchstart",function(){
+//        var $startEl = this;
+//        
+//        $(this).one("touchend", function(e){ 
+//            if( document.elementFromPoint(e.originalEvent.changedTouches[0].clientX,e.originalEvent.changedTouches[0].clientY) == $startEl){console.log(1);};
+//                    });
+//    });
+        $("#zone").on("tap", function(e) {console.log(e)});
+    </script>
+</body>
+</html>

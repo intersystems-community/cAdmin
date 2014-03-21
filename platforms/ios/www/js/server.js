@@ -1,6 +1,6 @@
 function script(){
     $(".server-menu").show("fast");
-    $("button.nav-page").on("touchend click",function(){ 
+    $("button.nav-page").on("tap click",function(){ 
             app.nav.navigate("#content",$(this).attr("href"),"fast"); 
         });
     
@@ -16,9 +16,9 @@ function script(){
     };
     
     page.serverLink = "http://"+app.servers[app.selectedServer].serverSettings.server.match(/wss?:\/\/([^\/]+)/)[1];
-    $("#docs").on("touchend click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/docbook/DocBook.UI.Page.cls", "_system")});
-    $("#webterm").on("touchend click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/WebTerminal/index.csp", "_system")});
-    $("#mportal").on("touchend click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/UtilHome.csp", "_system")});
+    $("#docs").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/docbook/DocBook.UI.Page.cls", "_system")});
+    $("#webterm").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/WebTerminal/index.csp", "_system")});
+    $("#mportal").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/UtilHome.csp", "_system")});
     
         app.servers[app.selectedServer].onProcList = function(pList) {
            for(i=0;i<pList.length;i++){
@@ -27,7 +27,7 @@ function script(){
                             "<td>"+pList[i].id+"</td>"+
                             "<td class=\"routine\">"+pList[i].routine+"</td>"+
                             "</tr>");
-               $tbody.find("tr").last().on("touchend click", function(e){ 
+               $tbody.find("tr").last().on("tap click", function(e){ 
                    $tbody.find(".proc-menu").remove();
                    e.preventDefault();
                     var $this =  $(this),
@@ -36,7 +36,7 @@ function script(){
                    else {
                             $thisr.addClass(".menu-shown"); $thisr.append(page.procMenu); 
                             $thisr.find(".notshown").data("pID", $this.find("td")[0].innerHTML).removeClass(".notshown").show("fast");
-                            $thisr.find(".btn").on("touchend click", function(){
+                            $thisr.find(".btn").on("tap click", function(){
                                 app.servers[app.selectedServer].sockets[0].send( "process:"+ $(this).data("action")+","+ $this.find("td")[0].innerHTML);
                             });
                    }
@@ -75,7 +75,7 @@ function script(){
                var dbInfo="";
                for(var k in m.Databases[i]){ if(k=="Name") continue; dbInfo+="<p>"+k+": "+m.Databases[i][k]+"</p>"; }
                $tbody.append('<div class="panel panel-default">'+
-                                '<div class="panel-heading" ontouchend="$(this).find(\'a\').click()">'+
+                                '<div class="panel-heading">'+
                                 '<h4 class="panel-title">'+
                                 '<a data-toggle="collapse" data-parent="#dbtable" href="#collapse'+i+'">'+
                                 dbName+
@@ -88,7 +88,9 @@ function script(){
                                 '</div>'+
                                 '</div>'+
                                 '</div>');
+               
             };
+        $(".panel-heading").on("tap",function(){ $(this).find('a').click() });
         }, function(){console.log("send message DB to server");this.send("db")} );
     
     
