@@ -25,9 +25,10 @@
      </head>
     <body>
 
-<script src="http://code.jquery.com/jquery-2.1.0.js"></script>
+<script src="js/jquery-2.1.0.js"></script>
 <script src="js/jquery.tap.min.js"></script>
-<script src="http://d3js.org/d3.v3.js"></script>
+<script src="js/jquery.touchSwipe.min.js"></script>
+<script src="js/d3.v3.js"></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/serverWidget.js"></script>
 <script src="js/localization.js"></script>
@@ -39,10 +40,50 @@
 <script src="js/utils.js"></script>
 <script src="phonegap.js"></script>
 
-        
+
+ <style>
+     * {
+      outline: none;
+     }
+        .sidebar{
+           
+            left: -200px;
+            width:250px;
+             background: rgba(0, 0, 0, 0.7);
+        -webkit-transition:  left 0.2s ease-in-out;
+          -moz-transition:  left 0.2s ease-in-out;
+          -ms-transition:  left 0.2s ease-in-out;
+          -o-transition:  left 0.2s ease-in-out;
+          transition:  left 0.2s ease-in-out;
+            
+/*            background-image: url('img/bg.png');*/
+            background-size: auto;
+            -webkit-transform: translate3d(0,0,0);
+            transform: translate3d(0,0,0)
+        }
+    
+/*
+     .sidebar ul a{
+         background: rgba(0, 0, 0, 1);
+     }
+*/
+     .open-sidebar{
+            left:0px;
+     }
+     .main{
+        margin-left:20px !important;
+     }
+     a{
+        color:white;
+     }
+     a:hover{
+         background:#2d6290 !important;
+         color:white;
+     }
+        </style>       
     
 
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" tabindex="2">
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -58,6 +99,15 @@
             <li ><a href="main.html" class="nav-page" locId="Dashboard">Dashboard</a></li>
 
             <li><a href="app-settings.html" class="nav-page" locId="Settings">Settings</a></li>
+           
+          </ul>
+            <ul class="nav nav-sidebar server-menu" style="display:none">
+              
+            <li class="active"><a href="" class="webterm" locId="Web Terminal">Web Terminal</a></li>
+            <li class="active"><a href="" class="mportal" locId="Management Portal">Management Portal</a></li>
+            <li class="active"><a href="" class="docs" locId="Documentation">Documentation</a></li>
+            <li class="active"><a href="cconsole.html" class="nav-page" locId="Cconsole finder">Cconsole finder</a></li>
+            
           </ul>
         </div>
       </div>
@@ -65,19 +115,22 @@
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-3 sidebar">
+        <div class="col-sm-3 sidebar" tabindex=1>
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="main.html" class="nav-page" locId="Dashboard">Dashboard</a></li>
+            <li class="active"> <a href="main.html" class="nav-page" locId="Dashboard"> Dashboard</a>
+                <span class="glyphicon glyphicon-align-justify pull-right menu-icon"></span> </li>
+            <li><a href="app-settings.html" class="nav-page" locId="Settings">Settings</a></li>
           </ul>
           <ul class="nav nav-sidebar server-menu" style="display:none">
-            <li><a href="" id="webterm" locId="Web Terminal">Web Terminal</a></li>
-            <li><a href="" id="mportal" locId="Management Portal">Management Portal</a></li>
-            <li><a href="" id="docs" locId="Documentation">Documentation</a></li>
+              
+            <li ><a href="" class="webterm" locId="Web Terminal">Web Terminal</a></li>
+            <li><a href="" class="mportal" locId="Management Portal">Management Portal</a></li>
+            <li><a href="" class="docs" locId="Documentation">Documentation</a></li>
             <li><a href="cconsole.html" class="nav-page" locId="Cconsole finder">Cconsole finder</a></li>
             
           </ul>
         </div>
-        <div class="col-sm-9 col-sm-offset-3 main" id="content">
+        <div class="col-sm-11 col-sm-offset-3 main" id="content">
            
             <!--    ************* CONTENT GOES HERE ***************     -->
             
@@ -85,5 +138,39 @@
       </div>
     </div>
 <div class="spinner"><img src="/img/spinner.gif"></img></div>
-    </body>
+<script>
+    $(".sidebar .glyphicon").on("click tap",function(){
+        var $el = $(".sidebar");
+        if ( $el.hasClass("open-sidebar") ){
+            $el.removeClass("open-sidebar"); 
+        }else {
+            $el.addClass("open-sidebar");   
+        }
+    });
+    $(".sidebar").focus(function(){console.log("focus"); }).focusout( function(){
+                
+                if ( $(".sidebar").hasClass("open-sidebar") ){
+                        $(".sidebar").removeClass("open-sidebar"); 
+                }
+    })
+    .swipe({
+              swipeStatus:function(event, phase, direction, distance, duration, fingers)
+                  {
+                        
+                      if (phase=="move" && direction =="right") {
+                          console.log(1);
+                        
+                          $(".sidebar").click().focus();
+                           $(".sidebar").addClass("open-sidebar");
+                           return false;
+                      }
+                      if (phase=="move" && direction =="left") {
+                           $(".sidebar").removeClass("open-sidebar");
+                           return false;
+                      }
+                  }
+          });
+    $(".navbar-fixed-top").focusout(function(){$(".navbar-fixed-top .collapse").removeClass("in");})
+    </script>    
+</body>
 </html>

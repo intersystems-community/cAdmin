@@ -78,4 +78,5 @@ if(app.db) {
     } else {
         console.log("error");}
 $("*").on("tap",function(){$(this).trigger("click")});
+
 //$(".navbar-right li").on("tap",function(){ $(this).find("a").trigger("tap");})

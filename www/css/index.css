@@ -85,6 +85,12 @@ table .overflow-scroll{
     background-color: #f5f5f5;
     border-right: 1px solid #eee;
   }
+    .navbar{
+        display:none;
+    }
+    body > .container-fluid{
+    margin-top: -50px;
+    }
 }
 
 /* Sidebar navigation */
@@ -141,4 +147,10 @@ table .overflow-scroll{
 
 .widget-area {
     margin: 0 auto;
+}
+
+.menu-icon {
+    color:white;
+    top: -29px;
+    right: 17px;
 }

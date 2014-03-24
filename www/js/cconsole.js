@@ -1,8 +1,9 @@
 function script(){
+    $("button.nav-page").on("tap click",function(){ 
+        app.nav.navigate("#content",$(this).attr("href"),"fast"); 
+    });
     $("#sName").text(app.servers[app.selectedServer].serverSettings.serverName);
-    $(".active").removeClass("active");
-    $(".server-menu li").last().addClass("active");
-    $("button").on("tap click",function(){
+    $("button.find").on("tap click",function(){
         var strToFind = $("#findstr")[0].value;
         page.cSocket = app.servers[app.selectedServer].createSocket( function(message) {
             var m = JSON.parse(message.data).children;

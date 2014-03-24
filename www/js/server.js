@@ -16,9 +16,9 @@ function script(){
     };
     
     page.serverLink = "http://"+app.servers[app.selectedServer].serverSettings.server.match(/wss?:\/\/([^\/]+)/)[1];
-    $("#docs").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/docbook/DocBook.UI.Page.cls", "_system")});
-    $("#webterm").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/WebTerminal/index.csp", "_system")});
-    $("#mportal").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/UtilHome.csp", "_system")});
+    $(".docs").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/docbook/DocBook.UI.Page.cls", "_system")});
+    $(".webterm").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/WebTerminal/index.csp", "_system")});
+    $(".mportal").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/UtilHome.csp", "_system")});
     
         app.servers[app.selectedServer].onProcList = function(pList) {
            for(i=0;i<pList.length;i++){
