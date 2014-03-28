@@ -20,8 +20,33 @@ function script(){
     $(".webterm").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/WebTerminal/index.csp", "_system")});
     $(".mportal").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/UtilHome.csp", "_system")});
     
-        app.servers[app.selectedServer].onProcList = function(pList) {
-           for(i=0;i<pList.length;i++){
+    
+    app.servers[app.selectedServer].sockets["process"] = app.servers[app.selectedServer].createSocket( function(message){
+            var data = "";
+            try { data = JSON.parse(message.data) }
+            catch(e) {
+                if( !this.bigMsg.isReceiving ) {console.log("Error in parsing data from server\n"+message.data); return;}
+                //We have more than 1 part
+                this.bigMsg.buffer+=message.data;
+                this.bigMsg.partsLeft--;
+                if (!this.bigMsg.partsLeft) {
+                    var _buffer={"data":this.bigMsg.buffer};
+                    this.bigMsg.buffer="";
+                    this.bigMsg.isReceiving=false;
+                    this.onmessage(_buffer);                
+                }
+            }
+            console.log(data);
+            //Do we have more than 1 part?
+            if ("parts" in data) {
+                alert("parts started");
+                this.bigMsg.isReceiving = true; 
+                this.bigMsg.partsLeft = data["parts"];
+                return;
+            }
+            var pList = data.processes;
+            //Finally got all the data
+            for(i=0;i<pList.length;i++){
                var $tbody = $("#processTable tbody");
                $tbody.append("<tr>"+
                             "<td>"+pList[i].id+"</td>"+
@@ -37,13 +62,17 @@ function script(){
                             $thisr.addClass(".menu-shown"); $thisr.append(page.procMenu); 
                             $thisr.find(".notshown").data("pID", $this.find("td")[0].innerHTML).removeClass(".notshown").show("fast");
                             $thisr.find(".btn").on("tap click", function(){
-                                app.servers[app.selectedServer].sockets[0].send( "process:"+ $(this).data("action")+","+ $this.find("td")[0].innerHTML);
+                                app.servers[app.selectedServer].sockets["process"].send( "process:"+ $(this).data("action")+","+ $this.find("td")[0].innerHTML);
                             });
                    }
                 });
                
             };
-        };
+            
+        }, function(){
+        app.servers[app.selectedServer].sockets["process"].send("process:List");
+        
+        });
     
         page.metricsSocket = app.servers[app.selectedServer].createSocket( function(message) {
         var m = JSON.parse(message.data);
@@ -97,7 +126,7 @@ function script(){
     
     
     //TODO: Create new socket for process:List
-        app.servers[app.selectedServer].sockets[0].send("process:List");
+        
         $("#sName").text(app.servers[app.selectedServer].serverSettings.serverName + " info");
         page.procMenu = "<div class=\"btn-group proc-menu notshown\">"+
   "<button type=\"button\" class=\"btn btn-default btn-sm\" data-action=\"Kill\">Kill</button>"+

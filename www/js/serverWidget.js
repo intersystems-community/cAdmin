@@ -58,7 +58,7 @@ function Server( serverSettings ) {
             //Checking what we have
             if ("CPU" in data) { _this.data = {endAngle: data.CPU/100 * τ}; _this.updateCPUring(); }
             if ("Increment" in data) { _this.data2 = {endAngle: data.Increment/100 * τ}; _this.updateHDDring(); }
-            //if ("processes" in data) { _this.onProcList(data.processes); }
+            if ("processes" in data) { _this.onProcList(data.processes); }
             
             //_this.onalert(JSON.stringify(data)); 
             },function(){ 
@@ -70,11 +70,9 @@ function Server( serverSettings ) {
                 }
             });
         
-        
         //Socket #2 for alerts
         _this.sockets["alerts"] = _this.createSocket(function(message) {
             //Getting JSON data from server
-            console.log("scoket", this);
             var data="";
             try { data = JSON.parse(message.data); } 
             catch(e) {
