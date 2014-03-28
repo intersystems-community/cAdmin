@@ -1,9 +1,10 @@
 function script(){
     
 function LoadSettings(){
+    console.log("Selected server:",app.selectedServer);
     for(var k in app.servers[app.selectedServer].serverSettings){
             if (k=="ID") continue;
-            if (k=="aupdate") {console.log("enter");if(app.servers[app.selectedServer].serverSettings.aupdate.toString()=="true") $("#aupdate").prop("checked","true");continue; }
+            if (k=="aupdate") {console.log("enter");if(app.servers[app.selectedServer].serverSettings.aupdate.toString()=="true")       $("#aupdate").prop("checked","true");continue; }
             $("#"+k).val(app.servers[app.selectedServer].serverSettings[k]);
        }
 }
@@ -16,7 +17,7 @@ function LoadSettings(){
         page.switch = new Switchery( $(".js-switch")[0] );
     
 function saveToDb(tx) {
-    var id=app.servers[app.selectedServer].serverSettings.id
+    var id=app.servers[app.selectedServer].serverSettings.id;
     var user = $("#user").val();
     var password = $("#password").val();
     var srv=$("#server").val();
@@ -35,21 +36,15 @@ function saveToDb(tx) {
             app.servers[app.selectedServer].sockets[i].close();
             clearInterval(app.servers[app.selectedServer].CPUupdate);
             clearInterval(app.servers[app.selectedServer].HDDupdate);
-            
         };
         app.servers[app.selectedServer].sockets=[];
-        } else {
+    } else {
         app.servers[app.selectedServer].sockets=[];
-            console.log("Created new sockets for server");
-        app.servers[app.selectedServer].createSockets();
-            
+        console.log("Created new sockets for server");
+        app.servers[app.selectedServer].createSockets();    
     }
-    
-    
     console.log(sqlText);
-     tx.executeSql(sqlText);
-    
-        
+    tx.executeSql(sqlText);
     console.log("saved.");
     app.nav.navigate("#content","main.html","fast"); 
 }
@@ -66,9 +61,10 @@ function deleteServer(tx){
 }
     
     
-    $("#back").on("tap click", function(e){
+    $("#back").on("tap", function(e){
         e.preventDefault();
         app.db.transaction(saveToDb, function(m){console.log(m)});
+        return false;
     });
     $("#delete").on("tap click",function(e){
         e.preventDefault();
