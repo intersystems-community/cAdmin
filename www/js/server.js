@@ -16,9 +16,9 @@ function script(){
     };
     
     page.serverLink = "http://"+app.servers[app.selectedServer].serverSettings.server.match(/wss?:\/\/([^\/]+)/)[1];
-    $(".docs").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/docbook/DocBook.UI.Page.cls", "_system")});
-    $(".webterm").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/WebTerminal/index.csp", "_system")});
-    $(".mportal").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/UtilHome.csp", "_system")});
+    $(".docs").off("tap").on("tap",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/docbook/DocBook.UI.Page.cls", "_system")});
+    $(".webterm").on("tap",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/WebTerminal/index.csp", "_system")});
+    $(".mportal").on("tap",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/UtilHome.csp", "_system")});
     
     
     app.servers[app.selectedServer].sockets["process"] = app.servers[app.selectedServer].createSocket( function(message){
@@ -52,7 +52,7 @@ function script(){
                             "<td>"+pList[i].id+"</td>"+
                             "<td class=\"routine\">"+pList[i].routine+"</td>"+
                             "</tr>");
-               $tbody.find("tr").last().on("tap click", function(e){ 
+               $tbody.find("tr").last().on("tap", function(e){ 
                    $tbody.find(".proc-menu").remove();
                    e.preventDefault();
                     var $this =  $(this),
@@ -61,16 +61,18 @@ function script(){
                    else {
                             $thisr.addClass(".menu-shown"); $thisr.append(page.procMenu); 
                             $thisr.find(".notshown").data("pID", $this.find("td")[0].innerHTML).removeClass(".notshown").show("fast");
-                            $thisr.find(".btn").on("tap click", function(){
+                            $thisr.find(".btn").on("tap", function(){
                                 app.servers[app.selectedServer].sockets["process"].send( "process:"+ $(this).data("action")+","+ $this.find("td")[0].innerHTML);
                             });
                    }
+                   return false;
                 });
                
             };
             $(".pmanager-header").find(".spinner-local") ? $(".pmanager-header .spinner-local").remove() : "";
             
         }, function(){
+            $(".pmanager-header").find(".spinner-local") ? $(".pmanager-header .spinner-local").remove() : "";
         $(".pmanager-header").append("<span class=\"spinner-local\"></span>");
         app.servers[app.selectedServer].sockets["process"].send("process:List");
         
@@ -96,6 +98,7 @@ function script(){
             };
             $(".metrics-header").find(".spinner-local") ? $(".metrics-header .spinner-local").remove() : "";
         }, function(){
+            $(".metrics-header").find(".spinner-local") ? $(".metrics-header .spinner-local").remove() : "";
             $(".metrics-header").append("<span class=\"spinner-local\"></span>");
             this.send("sensors")} );
     
@@ -124,17 +127,16 @@ function script(){
                                 '</div>');
                
             };
-        $(".panel-heading").on("tap",function(){ $(this).find('a').click() });
+        $(".panel-heading").on("tap",function(e){ e.preventDefault(); $(this).find('a').click(); return false; });
         $(".db-header").find(".spinner-local") ? $(".db-header .spinner-local").remove() : "";
         }, function(){
+            $(".db-header").find(".spinner-local") ? $(".db-header .spinner-local").remove() : "";
             $(".db-header").append("<span class=\"spinner-local\"></span>");
             this.send("db")
         } );
     
     
-    
-    
-    //TODO: Create new socket for process:List
+
         
         $("#sName").text(app.servers[app.selectedServer].serverSettings.serverName + " info");
         page.procMenu = "<div class=\"btn-group proc-menu notshown\">"+

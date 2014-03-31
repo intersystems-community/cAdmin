@@ -17,7 +17,7 @@
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/ios.css" rel="stylesheet">
         <link href="css/index.css" rel="stylesheet">
@@ -29,7 +29,6 @@
 <script src="js/jquery.tap.min.js"></script>
 <script src="js/jquery.touchSwipe.min.js"></script>
 <script src="js/d3.v3.js"></script>
-        <script src="http://fgnass.github.io/spin.js/spin.js"></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/serverWidget.js"></script>
 <script src="js/localization.js"></script>
@@ -39,7 +38,9 @@
 <script src="js/transitionize.js"></script>
 <script src="js/switchery.js"></script> <!-- some eye-candy: iOS switchers -->
 <script src="js/utils.js"></script>
+<script src="cordova.js"></script>
 <script src="phonegap.js"></script>
+
 
 
  <style>
@@ -72,7 +73,7 @@
             left:0px;
      }
      .main{
-        margin-left:20px !important;
+        margin-left:20px ;
      }
      a{
         color:white;
@@ -82,9 +83,8 @@
          color:white;
      }
         </style>       
-    
-
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" tabindex="2">
+    <div class="iphone-fix"></div>
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -95,7 +95,7 @@
           </button>
           <a class="navbar-brand nav-page" href="main.html" locId="Cache Admin">Caché Admin</a>
         </div>
-        <div class="navbar-collapse collapse">
+        <div class="navbar-collapse collapse" tabindex="3">
           <ul class="nav navbar-nav navbar-right">
             <li ><a href="main.html" class="nav-page" locId="Dashboard">Dashboard</a></li>
 
@@ -104,17 +104,17 @@
           </ul>
             <ul class="nav nav-sidebar server-menu" style="display:none">
               
-            <li class="active"><a href="" class="webterm" locId="Web Terminal">Web Terminal</a></li>
-            <li class="active"><a href="" class="mportal" locId="Management Portal">Management Portal</a></li>
-            <li class="active"><a href="" class="docs" locId="Documentation">Documentation</a></li>
-            <li class="active"><a href="cconsole.html" class="nav-page" locId="Cconsole finder">Cconsole finder</a></li>
+            <li><a href="" class="webterm" locId="Web Terminal">Web Terminal</a></li>
+            <li><a href="" class="mportal" locId="Management Portal">Management Portal</a></li>
+            <li><a href="" class="docs" locId="Documentation">Documentation</a></li>
+            <li><a href="cconsole.html" class="nav-page" locId="Cconsole finder">Cconsole finder</a></li>
             
           </ul>
         </div>
       </div>
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid" >
       <div class="row">
         <div class="col-sm-3 sidebar" tabindex=1>
           <ul class="nav nav-sidebar">
@@ -138,15 +138,19 @@
         </div>
       </div>
     </div>
-<div class="spinner"><img src="/img/spinner.gif"></img></div>
+    
+<div class="spinner"></div>
+
 <script>
-    $(".sidebar .glyphicon").on("click tap",function(){
+    $(".sidebar .glyphicon").on("tap",function(e){
+        e.preventDefault();
         var $el = $(".sidebar");
         if ( $el.hasClass("open-sidebar") ){
             $el.removeClass("open-sidebar"); 
         }else {
             $el.addClass("open-sidebar");   
         }
+        return false;
     });
     $(".sidebar").focus(function(){console.log("focus"); }).focusout( function(){
                 
@@ -171,7 +175,7 @@
                       }
                   }
           });
-    $(".navbar-fixed-top").focusout(function(){$(".navbar-fixed-top .collapse").removeClass("in");})
+   $(".navbar-collapse.collapse").focusout(function(){$(".navbar-fixed-top .collapse").removeClass("in");})
     </script>    
 </body>
 </html>

@@ -7,9 +7,10 @@
              console.log(sqlText);
             t.executeSql(sqlText);
             app.nav.navigate("#content","main.html");
-        })
-     }
+        });
+         return false;
+     };
      //$("#save").on("click",SaveToDB);
      $("#back").off();
-     $("#back").one("tap click", SaveToDB);
+     $("#back").one("tap", SaveToDB);
  };

@@ -57,7 +57,7 @@ function Server( serverSettings ) {
             catch(e) { console.log("Error in parsing data from server\n"+message.data); return; }
             //Checking what we have
             if ("CPU" in data) { _this.data = {endAngle: data.CPU/100 * τ}; _this.updateCPUring(); }
-            if ("Increment" in data) { _this.data2 = {endAngle: data.Increment/100 * τ}; _this.updateHDDring(); }
+            if ("FreeJournalSpacePercent" in data) { _this.data2 = {endAngle: (100-data.FreeJournalSpacePercent)/100 * τ}; _this.updateHDDring(); }
             if ("processes" in data) { _this.onProcList(data.processes); }
             
             //_this.onalert(JSON.stringify(data)); 
@@ -65,7 +65,7 @@ function Server( serverSettings ) {
                 var s=this;
                 if(_this.serverSettings.aupdate!="false"){
                 _this.CPUupdate = window.setInterval(function(){s.send( "Sensors:CPU" ); },_this.interval); 
-                _this.HDDupdate = window.setInterval(function(){s.send( "devtools:Increment" );  },2*_this.interval);
+                _this.HDDupdate = window.setInterval(function(){s.send( "Sensors:FreeJournalSpacePercent" );  },2*_this.interval);
                 _this.onalert("Connected");
                 }
             });

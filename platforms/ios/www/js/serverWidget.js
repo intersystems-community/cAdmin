@@ -28,8 +28,13 @@ function Server( serverSettings ) {
     
     _this.createSocket = function( msgHandler, onCreated ) {
         var ws="";
-       try{ ws = new WebSocket( _this.serverSettings.server );  } 
-        catch(e){console.log(e);return;}
+        try{ ws = new WebSocket( _this.serverSettings.server );  } 
+        catch(e){ console.log(e);return; }
+        ws.bigMsg = {
+            buffer:"",
+            isReceiving:false,
+            partsLeft:0
+        };
         ws.onopen = function(){ 
             this.send( JSON.stringify( 
                 {
@@ -45,34 +50,53 @@ function Server( serverSettings ) {
     
     _this.createSockets = function(){
         //Socket #1 for widget
-        _this.sockets.push( _this.createSocket( function(message) {
+        _this.sockets["widget"] = _this.createSocket( function(message) {
             //Getting JSON data from server
             var data=""
             try { data = JSON.parse(message.data); } 
-            catch(e) { console.log("Error in parsing data from server\n"+message.data); return;}
+            catch(e) { console.log("Error in parsing data from server\n"+message.data); return; }
             //Checking what we have
-            if ("RandomNumber" in data) { _this.data = {endAngle: data.RandomNumber/100 * τ}; _this.updateCPUring(); }
-            if ("Increment" in data) { _this.data2 = {endAngle: data.Increment/100 * τ}; _this.updateHDDring(); }
+            if ("CPU" in data) { _this.data = {endAngle: data.CPU/100 * τ}; _this.updateCPUring(); }
+            if ("FreeJournalSpacePercent" in data) { _this.data2 = {endAngle: (100-data.FreeJournalSpacePercent)/100 * τ}; _this.updateHDDring(); }
             if ("processes" in data) { _this.onProcList(data.processes); }
-            //_this.onalert(data); 
+            
+            //_this.onalert(JSON.stringify(data)); 
             },function(){ 
                 var s=this;
                 if(_this.serverSettings.aupdate!="false"){
-                _this.CPUupdate = window.setInterval(function(){s.send( "devtools:RandomNumber" ); },_this.interval); 
-                _this.HDDupdate = window.setInterval(function(){s.send( "devtools:Increment" );  },2*_this.interval);
-                
+                _this.CPUupdate = window.setInterval(function(){s.send( "Sensors:CPU" ); },_this.interval); 
+                _this.HDDupdate = window.setInterval(function(){s.send( "Sensors:FreeJournalSpacePercent" );  },2*_this.interval);
                 _this.onalert("Connected");
                 }
-            }) );
+            });
+        
         //Socket #2 for alerts
-        _this.sockets.push( _this.createSocket(function(message) {
+        _this.sockets["alerts"] = _this.createSocket(function(message) {
             //Getting JSON data from server
-            var data=""
+            var data="";
             try { data = JSON.parse(message.data); } 
-            catch(e) { console.log("Error in parsing data from server\n"+message.data); return;}
-            //Checking what we have
+            catch(e) {
+                if( !this.bigMsg.isReceiving ) {console.log("Error in parsing data from server\n"+message.data); return;}
+                //We have more than 1 part
+                this.bigMsg.buffer+=message.data;
+                this.bigMsg.partsLeft--;
+                if (!this.bigMsg.partsLeft) {
+                    var _buffer={"data":this.bigMsg.buffer};
+                    this.bigMsg.buffer="";
+                    this.bigMsg.isReceiving=false;
+                    this.onmessage(_buffer);                
+                }
+            }
+            console.log(data);
+            //Do we have more than 1 part?
+            if ("parts" in data) {
+                alert("parts started");
+                this.bigMsg.isReceiving = true; 
+                this.bigMsg.partsLeft = data["parts"];
+                return;
+            }
              _this.onalert(data.children[0].Message);
-            },function(){ if(_this.serverSettings.aupdate=="true"){this.send("cconsole-alert"); _this.onalert("Connected");}}) );
+            },function(){ if(_this.serverSettings.aupdate=="true"){this.send("cconsole-alert"); _this.onalert("Connected");}});
         
     };
     
@@ -144,7 +168,7 @@ function Server( serverSettings ) {
         return "translate(0,0)"; 
         })
     .style("display", function(){ 
-        if ( _this.sockets[0] && _this.sockets[0].url.match(/wss:\/\//) ){
+        if ( _this.sockets["widget"] && _this.sockets["widget"].url.match(/wss:\/\//) ){
             return "";
         }
         return "none";

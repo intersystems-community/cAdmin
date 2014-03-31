@@ -16,18 +16,43 @@ function script(){
     };
     
     page.serverLink = "http://"+app.servers[app.selectedServer].serverSettings.server.match(/wss?:\/\/([^\/]+)/)[1];
-    $(".docs").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/docbook/DocBook.UI.Page.cls", "_system")});
-    $(".webterm").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/WebTerminal/index.csp", "_system")});
-    $(".mportal").on("tap click",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/UtilHome.csp", "_system")});
+    $(".docs").off("tap").on("tap",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/docbook/DocBook.UI.Page.cls", "_system")});
+    $(".webterm").on("tap",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/WebTerminal/index.csp", "_system")});
+    $(".mportal").on("tap",function(e){e.preventDefault(); window.open(page.serverLink+"/csp/sys/UtilHome.csp", "_system")});
     
-        app.servers[app.selectedServer].onProcList = function(pList) {
-           for(i=0;i<pList.length;i++){
+    
+    app.servers[app.selectedServer].sockets["process"] = app.servers[app.selectedServer].createSocket( function(message){
+            var data = "";
+            try { data = JSON.parse(message.data) }
+            catch(e) {
+                if( !this.bigMsg.isReceiving ) {console.log("Error in parsing data from server\n"+message.data); return;}
+                //We have more than 1 part
+                this.bigMsg.buffer+=message.data;
+                this.bigMsg.partsLeft--;
+                if (!this.bigMsg.partsLeft) {
+                    var _buffer={"data":this.bigMsg.buffer};
+                    this.bigMsg.buffer="";
+                    this.bigMsg.isReceiving=false;
+                    this.onmessage(_buffer);                
+                }
+            }
+            console.log(data);
+            //Do we have more than 1 part?
+            if ("parts" in data) {
+                alert("parts started");
+                this.bigMsg.isReceiving = true; 
+                this.bigMsg.partsLeft = data["parts"];
+                return;
+            }
+            var pList = data.processes;
+            //Finally got all the data
+            for(i=0;i<pList.length;i++){
                var $tbody = $("#processTable tbody");
                $tbody.append("<tr>"+
                             "<td>"+pList[i].id+"</td>"+
                             "<td class=\"routine\">"+pList[i].routine+"</td>"+
                             "</tr>");
-               $tbody.find("tr").last().on("tap click", function(e){ 
+               $tbody.find("tr").last().on("tap", function(e){ 
                    $tbody.find(".proc-menu").remove();
                    e.preventDefault();
                     var $this =  $(this),
@@ -36,14 +61,22 @@ function script(){
                    else {
                             $thisr.addClass(".menu-shown"); $thisr.append(page.procMenu); 
                             $thisr.find(".notshown").data("pID", $this.find("td")[0].innerHTML).removeClass(".notshown").show("fast");
-                            $thisr.find(".btn").on("tap click", function(){
-                                app.servers[app.selectedServer].sockets[0].send( "process:"+ $(this).data("action")+","+ $this.find("td")[0].innerHTML);
+                            $thisr.find(".btn").on("tap", function(){
+                                app.servers[app.selectedServer].sockets["process"].send( "process:"+ $(this).data("action")+","+ $this.find("td")[0].innerHTML);
                             });
                    }
+                   return false;
                 });
                
             };
-        };
+            $(".pmanager-header").find(".spinner-local") ? $(".pmanager-header .spinner-local").remove() : "";
+            
+        }, function(){
+            $(".pmanager-header").find(".spinner-local") ? $(".pmanager-header .spinner-local").remove() : "";
+        $(".pmanager-header").append("<span class=\"spinner-local\"></span>");
+        app.servers[app.selectedServer].sockets["process"].send("process:List");
+        
+        });
     
         page.metricsSocket = app.servers[app.selectedServer].createSocket( function(message) {
         var m = JSON.parse(message.data);
@@ -63,7 +96,11 @@ function script(){
                             "<td>"+value+"</td>"+
                             "</tr>");               
             };
-        }, function(){this.send("sensors")} );
+            $(".metrics-header").find(".spinner-local") ? $(".metrics-header .spinner-local").remove() : "";
+        }, function(){
+            $(".metrics-header").find(".spinner-local") ? $(".metrics-header .spinner-local").remove() : "";
+            $(".metrics-header").append("<span class=\"spinner-local\"></span>");
+            this.send("sensors")} );
     
     page.DBSocket = app.servers[app.selectedServer].createSocket( function(message) {
         var m = JSON.parse(message.data);
@@ -90,14 +127,17 @@ function script(){
                                 '</div>');
                
             };
-        $(".panel-heading").on("tap",function(){ $(this).find('a').click() });
-        }, function(){console.log("send message DB to server");this.send("db")} );
+        $(".panel-heading").on("tap",function(e){ e.preventDefault(); $(this).find('a').click(); return false; });
+        $(".db-header").find(".spinner-local") ? $(".db-header .spinner-local").remove() : "";
+        }, function(){
+            $(".db-header").find(".spinner-local") ? $(".db-header .spinner-local").remove() : "";
+            $(".db-header").append("<span class=\"spinner-local\"></span>");
+            this.send("db")
+        } );
     
     
-    
-    
-    //TODO: Create new socket for process:List
-        app.servers[app.selectedServer].sockets[0].send("process:List");
+
+        
         $("#sName").text(app.servers[app.selectedServer].serverSettings.serverName + " info");
         page.procMenu = "<div class=\"btn-group proc-menu notshown\">"+
   "<button type=\"button\" class=\"btn btn-default btn-sm\" data-action=\"Kill\">Kill</button>"+

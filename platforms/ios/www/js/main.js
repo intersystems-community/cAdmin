@@ -1,8 +1,9 @@
    function script(){
-       function CreateServer(){
+       function CreateServer(newID){
            app.db.transaction(function(tx){
-               var newId = app.servers.length;
-               tx.executeSql('INSERT INTO SERVERS (id, serverName,user,password,server,aupdate) VALUES ('+newId+', "New Server","","", "", "true")');
+               
+               console.log('INSERT INTO SERVERS (id, serverName,user,password,server,aupdate) VALUES ('+newID+', "New Server","","", "", "true")');
+               tx.executeSql('INSERT INTO SERVERS (id, serverName,user,password,server,aupdate) VALUES ('+newID+', "New Server","","", "", "true")');
            }, function(m){console.log(m)});
        }
        $("a.nav-page").off("tap click").on("tap click", function(e){
@@ -11,9 +12,12 @@
            });
        
        $("#createServer").on("tap click", function(){
-           CreateServer();
-           app.servers.push( new Server({id:app.servers.length, serverName:"New Server", user:"root", password:"zckKqko12", server:"ws://37.139.4.54:57773/csp/cAdmin/cAdmin.WebSocket.cls"}) );
-           app.selectedServer = app.servers.length-1;
+           var newID=app.servers.length;
+           CreateServer(newID);
+
+           console.log("created :",newID);
+           app.servers.push( new Server({id:newID, serverName:"New Server", user:"root", password:"zckKqko12", server:"ws://37.139.4.54:57773/csp/cAdmin/cAdmin.WebSocket.cls"}) );
+           app.selectedServer = newID;
            app.nav.navigate("#content","server-settings.html","fast");
                    });
        
