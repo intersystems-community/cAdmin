@@ -19,7 +19,7 @@ background-color: red !important;
     left:0;
     right:0;
     background:rgba(0,0,0,0.2);
-/*    background-image: url("../img/spinner.gif");*/
+    background-image: url("../img/spinner.gif");
     background-repeat: no-repeat;
     background-origin: content-box;
     padding: 20% 50%;
@@ -29,6 +29,18 @@ background-color: red !important;
     height:5em;
     width: 5em;
 }
+
+.spinner-local{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-image: url("../img/spinner.gif");
+    background-repeat: no-repeat;
+    background-origin: content-box;
+}
+
+
 .collapsing {  transition: height 0.01s !important; }
 h3,h2{
 /*    float:right;*/

@@ -68,8 +68,10 @@ function script(){
                 });
                
             };
+            $(".pmanager-header").find(".spinner-local") ? $(".pmanager-header .spinner-local").remove() : "";
             
         }, function(){
+        $(".pmanager-header").append("<span class=\"spinner-local\"></span>");
         app.servers[app.selectedServer].sockets["process"].send("process:List");
         
         });
@@ -92,7 +94,10 @@ function script(){
                             "<td>"+value+"</td>"+
                             "</tr>");               
             };
-        }, function(){this.send("sensors")} );
+            $(".metrics-header").find(".spinner-local") ? $(".metrics-header .spinner-local").remove() : "";
+        }, function(){
+            $(".metrics-header").append("<span class=\"spinner-local\"></span>");
+            this.send("sensors")} );
     
     page.DBSocket = app.servers[app.selectedServer].createSocket( function(message) {
         var m = JSON.parse(message.data);
@@ -120,7 +125,11 @@ function script(){
                
             };
         $(".panel-heading").on("tap",function(){ $(this).find('a').click() });
-        }, function(){console.log("send message DB to server");this.send("db")} );
+        $(".db-header").find(".spinner-local") ? $(".db-header .spinner-local").remove() : "";
+        }, function(){
+            $(".db-header").append("<span class=\"spinner-local\"></span>");
+            this.send("db")
+        } );
     
     
     
