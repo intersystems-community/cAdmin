@@ -2,7 +2,7 @@
 //
 // Global object APP
 // You push all the APP-scoped info and methods here
-// For our purposes it will be: WebSockets data, serverSettings
+// For our purposes it will be: WebSockets data, Server objects
 //
 //
 
@@ -13,6 +13,11 @@ function App(){
 
 var app = new App();
 app.localization = new Localization();
+app.servers = [];
+app.nav = new Navigator();
+app.db = window.openDatabase("cAdmin", "1.0", "Cordova Demo", 200000);
+
+
 //
 //************  Function for DB interaction
 //
@@ -46,6 +51,8 @@ function InitServers(){
         },function(t,m) {console.log(m)})
     })
 };
+
+//Loading app settings from local SQL DB
 function LoadAppSettings(){
  app.db.transaction(function(t){
         t.executeSql('CREATE TABLE IF NOT EXISTS APPLICATION (localeName)');
@@ -55,14 +62,12 @@ function LoadAppSettings(){
             console.log('settings loaded');
             $(window).trigger("AppReady");
             $(".spinner").hide();
-            //$(window).trigger("AppReady");
         },function(t,m) {console.log(m)})
     })
 }
                     
-app.servers = [];
-app.nav = new Navigator();
-    $(window).one("AppReady",function(){
+//When app is ready, navigate to main page
+$(window).one("AppReady",function(){
         $("a.nav-page").on("tap click", function(e){
            e.preventDefault();
            app.nav.navigate("#content",$(this).attr('href'),"fast");
@@ -72,11 +77,52 @@ app.nav = new Navigator();
 
 $(window).one("DBConnected", InitServers);
 $(window).one("AppAboutToReady",LoadAppSettings);
-app.db = window.openDatabase("cAdmin", "1.0", "Cordova Demo", 200000);
+
+
+
 if(app.db) {
         app.db.transaction(populateDB, errorSQL);
-    } else {
-        console.log("error");}
+} else {
+        console.log("error");
+}
+
+//Fix for both of inputs - tap and click
 $("*").on("tap",function(){$(this).trigger("click")});
 
-//$(".navbar-right li").on("tap",function(){ $(this).find("a").trigger("tap");})
+//
+//          Sidebar UI interaction
+//
+ $(".sidebar .glyphicon").on("tap",function(e){
+        e.preventDefault();
+        var $el = $(".sidebar");
+        if ( $el.hasClass("open-sidebar") ){
+            $el.removeClass("open-sidebar"); 
+        }else {
+            $el.addClass("open-sidebar");   
+        }
+        return false;
+    });
+    $(".sidebar").focus(function(){console.log("focus"); }).focusout( function(){
+                
+                if ( $(".sidebar").hasClass("open-sidebar") ){
+                        $(".sidebar").removeClass("open-sidebar"); 
+                }
+    })
+    .swipe({
+              swipeStatus:function(event, phase, direction, distance, duration, fingers)
+                  {
+                        
+                      if (phase=="move" && direction =="right") {
+                          console.log(1);
+                        
+                          $(".sidebar").click().focus();
+                           $(".sidebar").addClass("open-sidebar");
+                           return false;
+                      }
+                      if (phase=="move" && direction =="left") {
+                           $(".sidebar").removeClass("open-sidebar");
+                           return false;
+                      }
+                  }
+          });
+   $(".navbar-collapse.collapse").focusout(function(){$(".navbar-fixed-top .collapse").removeClass("in");})

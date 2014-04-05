@@ -1,8 +1,13 @@
+//
+//
+//      This object represents single Server instance.
+//      It has settings, sockets and also a widget object, which is used for showing server stats dynamically
+//
+//
 
 function Server( serverSettings ) {
     var τ = 2 * Math.PI; 
     var _this = this;
-//    _this.container = container;
     _this.thickness = 5;
     _this.distance = 10;
     _this.interval = 1500;
@@ -90,7 +95,6 @@ function Server( serverSettings ) {
             console.log(data);
             //Do we have more than 1 part?
             if ("parts" in data) {
-                alert("parts started");
                 this.bigMsg.isReceiving = true; 
                 this.bigMsg.partsLeft = data["parts"];
                 return;

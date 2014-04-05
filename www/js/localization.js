@@ -8,14 +8,13 @@ function Localization() {
     _this.locale="en-US";
     _this.localeData ={};
     _this.LOCALIZATION_DIR = "locale";
-    _this.NOT_FOUND = "";
     
     
     _this.localize = function (selector,locale) {
         _this.getData(locale, function(data) {
             selector = selector || "document";
             $(selector).find($("[locId]")).each(function (index, el) {
-                el.innerHTML = _this.localeData[$(el).attr("locId")] || _this.NOT_FOUND;
+                el.innerHTML = _this.localeData[$(el).attr("locId")] || el.innerHTML;
             });
         });
     };
@@ -23,7 +22,7 @@ function Localization() {
     this.localizeOne = function (selector,locale) {
         _this.getData(locale, function() {
             var el = $(selector)[0];
-            el.innerHTML = _this.localeData[$(el).attr("locId")] || _this.NOT_FOUND;
+            el.innerHTML = _this.localeData[$(el).attr("locId")] || el.innerHTML;
         });
     };
     

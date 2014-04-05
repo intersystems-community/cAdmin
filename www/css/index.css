@@ -3,6 +3,9 @@
  */
 
 /* Move down content because we have a fixed navbar that is 50px tall */
+* {
+      outline: none !important;
+}
 body {
   padding-top: 50px;
 }
@@ -12,6 +15,33 @@ background-color: red !important;
 .btn-danger :focus {
 background-color: red !important;
 }
+
+div.sidebar{
+    left: -200px;
+    width:250px;
+    background: rgba(0, 0, 0, 0.7);
+    -webkit-transition:  left 0.2s ease-in-out;
+    -moz-transition:  left 0.2s ease-in-out;
+    -ms-transition:  left 0.2s ease-in-out;
+    -o-transition:  left 0.2s ease-in-out;
+    transition:  left 0.2s ease-in-out;
+}
+    
+div.open-sidebar{
+    left:0px;
+}
+.main{
+    margin-left:20px ;
+}
+a{
+    color:white;
+}
+a:hover{
+    background:#2d6290 !important;
+    color:white;
+}
+
+
 .spinner{
     position:fixed;
     top:0;
@@ -47,8 +77,8 @@ h3,h2{
 /*    float:right;*/
     margin-top:2em !important;
 }
-h4{
-margin-top: 2em;
+h3{
+margin-top: 2em !important;
 }
 /*
  * Global add-ons
@@ -96,6 +126,9 @@ table .overflow-scroll{
 
 }
 */
+.glyphicon.pull-left,.glyphicon.pull-right{
+    margin-right:5px;
+}
 @media (min-width: 768px) {
   .sidebar {
     position: fixed;
@@ -128,25 +161,54 @@ table .overflow-scroll{
   margin-right: -21px; /* 20px padding + 1px border */
   margin-bottom: 20px;
 }
+.nav-sidebar li a{
+    background:none;
+}
+.nav-sidebar li a:hover{
+    margin-right: 0;
+}
 .nav-sidebar > li > a {
   padding-left: 20px;
   padding-right: 20px;
 }
-.nav-sidebar > .active > a {
+.nav-sidebar li.active{
+    background-color: #428bca;
+}
+.nav-sidebar a {
   color: #fff;
+    margin-right: 50px;
   background-color: #428bca;
 }
-
-
+.progress{
+    margin-bottom: 0 !important;
+}
+.panel-body{
+    padding: 0;
+}
+#db-spoiler .panel-body{
+    padding: 5px;
+}
 /*
  * Main content
  */
+
+/*iPad mini 1st gen*/
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px)
+and (-webkit-min-device-pixel-ratio: 1){
+     body{
+    font-weight: 400;
+    }
+
+}
 @media(max-width: 600px){
     .main{
         margin-top:20px !important;
         margin-left:0px !important;
         padding:5px !important;
     }
+   
     .widget-area{
     width: 220px;
 }
@@ -188,9 +250,34 @@ table .overflow-scroll{
 .widget-area {
     margin: 0 auto;
 }
-
+.panel a:hover{
+    background: transparent !important;
+    color: #007aff;
+}
 .menu-icon {
     color:white;
     top: -29px;
     right: 17px;
+    margin-right:0 !important;
+}
+
+.nb-fixed-top-button {
+     width: 70px;
+    height: 50px;
+    display: inline-block;
+    float: right;
+    
+}
+
+#cconsole td {
+    white-space: normal;
+    
+}
+
+.row-widgets {
+    margin:0;
+}
+
+.find-date {
+    width:45%;
 }

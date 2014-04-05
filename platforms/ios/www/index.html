@@ -2,13 +2,8 @@
 
 <!-- 
 
-
-
-
-
 **************************  Entry point for application
 *************   We do NOT leave this page
-
 
 -->
 
@@ -25,73 +20,20 @@
      </head>
     <body>
 
-<script src="js/jquery-2.1.0.js"></script>
-<script src="js/jquery.tap.min.js"></script>
-<script src="js/jquery.touchSwipe.min.js"></script>
-<script src="js/d3.v3.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/serverWidget.js"></script>
-<script src="js/localization.js"></script>
-<script src="js/nav.js"></script>
-<script src="js/app.js"></script> <!-- INITIALIZED APP-SCOPED OBJECT -->
 
-<script src="js/transitionize.js"></script>
-<script src="js/switchery.js"></script> <!-- some eye-candy: iOS switchers -->
-<script src="js/utils.js"></script>
-<script src="phonegap.js"></script>
-
-
-
- <style>
-     * {
-      outline: none;
-     }
-        .sidebar{
-           
-            left: -200px;
-            width:250px;
-             background: rgba(0, 0, 0, 0.7);
-        -webkit-transition:  left 0.2s ease-in-out;
-          -moz-transition:  left 0.2s ease-in-out;
-          -ms-transition:  left 0.2s ease-in-out;
-          -o-transition:  left 0.2s ease-in-out;
-          transition:  left 0.2s ease-in-out;
-            
-/*            background-image: url('img/bg.png');*/
-            background-size: auto;
-            -webkit-transform: translate3d(0,0,0);
-            transform: translate3d(0,0,0)
-        }
-    
-/*
-     .sidebar ul a{
-         background: rgba(0, 0, 0, 1);
-     }
-*/
-     .open-sidebar{
-            left:0px;
-     }
-     .main{
-        margin-left:20px ;
-     }
-     a{
-        color:white;
-     }
-     a:hover{
-         background:#2d6290 !important;
-         color:white;
-     }
-        </style>       
+     
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" tabindex="2">
     <div class="iphone-fix"></div>
       <div class="container-fluid">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <div data-toggle="collapse" data-target=".navbar-collapse" class="nb-fixed-top-button">
+          <button type="button" class="navbar-toggle" >
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
+                </div>
           <a class="navbar-brand nav-page" href="main.html" locId="Cache Admin">Caché Admin</a>
         </div>
         <div class="navbar-collapse collapse" tabindex="3">
@@ -140,41 +82,19 @@
     
 <div class="spinner"></div>
 
-<script>
-    $(".sidebar .glyphicon").on("tap",function(e){
-        e.preventDefault();
-        var $el = $(".sidebar");
-        if ( $el.hasClass("open-sidebar") ){
-            $el.removeClass("open-sidebar"); 
-        }else {
-            $el.addClass("open-sidebar");   
-        }
-        return false;
-    });
-    $(".sidebar").focus(function(){console.log("focus"); }).focusout( function(){
-                
-                if ( $(".sidebar").hasClass("open-sidebar") ){
-                        $(".sidebar").removeClass("open-sidebar"); 
-                }
-    })
-    .swipe({
-              swipeStatus:function(event, phase, direction, distance, duration, fingers)
-                  {
-                        
-                      if (phase=="move" && direction =="right") {
-                          console.log(1);
-                        
-                          $(".sidebar").click().focus();
-                           $(".sidebar").addClass("open-sidebar");
-                           return false;
-                      }
-                      if (phase=="move" && direction =="left") {
-                           $(".sidebar").removeClass("open-sidebar");
-                           return false;
-                      }
-                  }
-          });
-   $(".navbar-collapse.collapse").focusout(function(){$(".navbar-fixed-top .collapse").removeClass("in");})
-    </script>    
+<script src="js/jquery-2.1.0.js"></script>
+<script src="js/jquery.tap.min.js"></script>
+<script src="js/jquery.touchSwipe.min.js"></script>
+<script src="js/d3.v3.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/serverWidget.js"></script>
+<script src="js/localization.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/app.js"></script> <!-- INITIALIZED APP-SCOPED OBJECT -->
+
+<script src="js/transitionize.js"></script>
+<script src="js/switchery.js"></script> <!-- some eye-candy: iOS switchers -->
+<script src="js/utils.js"></script>
+<script src="phonegap.js"></script> 
 </body>
 </html>

@@ -19,4 +19,4 @@ function getClockTime()
                     " " +
                     ap;
    return timeString;
-} // function getClockTime()
+} 

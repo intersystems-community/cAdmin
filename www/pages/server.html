@@ -13,22 +13,44 @@
     <span id="sName"></span>
 </h3>
 
-<h4 locId="Server Metrics" class="metrics-header">Server Metrics</h4>
-
-<div class="table-responsive overflow-scroll">
-<table class="table table-striped" id="metricsTable">
-    <thead>
-        <th locId="Metric">Metric</th>
-        <th locId="Value">Value</th>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<div class="panel-group" id="metrics-spoiler">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title metrics-header">
+        <a data-toggle="collapse" data-parent="#metrics-spoiler" href="#metrics-spoiler .collapseOne" locId="Server Metrics">
+          Server Metrics
+        </a>
+      </h4>
+    </div>
+    <div class="collapseOne panel-collapse collapse">
+      <div class="panel-body">
+          <div class="overflow-scroll">
+              <table class="table table-striped" id="metricsTable">
+                <thead>
+                <th locId="Metric" width=50%>Metric</th>
+                <th locId="Value" width=50%>Value</th>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+          </div>
+        </div>
+    </div>
+  </div>
 </div>
 
-<h4 locId="Process Manager" class="pmanager-header">Process Manager</h4>
-
-<div class="table-responsive overflow-scroll">
+<div class="panel-group" id="pmanager-spoiler">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title pmanager-header">
+        <a data-toggle="collapse" data-parent="#pmanager-spoiler" href="#pmanager-spoiler .collapseOne" locid="Process Manager">
+          Process Manager
+        </a>
+      </h4>
+    </div>
+    <div class="collapseOne panel-collapse collapse">
+      <div class="panel-body">
+          <div class="overflow-scroll">
 <table class="table table-striped" id="processTable">
     <thead>
         <th>pId</th>
@@ -39,10 +61,26 @@
 </table>
 </div>
 
+        </div>
+    </div>
+  </div>
+</div>
 
-      
-<h4 locId="Databases Info" class="db-header">Databases Info</h4>     
-<div class="panel-group" id="dbtable">
-  
+<div class="panel-group" id="db-spoiler">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title db-header">
+        <a data-toggle="collapse" data-parent="#db-spoiler" href="#db-spoiler .collapseOne" locId="Databases Info">
+         Databases Info
+        </a>
+      </h4>
+    </div>
+    <div class="collapseOne panel-collapse collapse">
+      <div class="panel-body">
+          <div class="panel-group" id="dbtable">
+          </div>
+        </div>
+    </div>
+  </div>
 </div>
 

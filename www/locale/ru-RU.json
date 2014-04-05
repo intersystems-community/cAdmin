@@ -31,5 +31,22 @@
     "Language":"Язык",
     "Web Terminal":"Веб терминал",
     "Management Portal":"Портал управления",
-    "Documentation":"Документация"
+    "Documentation":"Документация",
+    "Cconsole finder":"Поиск по cconsole",
+    "Uptime":"Время онлайн",
+    "hours":"ч",
+    "mins":"м",
+    "secs":"с",
+    "days":"д",
+    "CPU":"Загрузка ЦПУ",
+    "CSPGatewayLatency":"Отклик CSP шлюза",
+    "milliseconds":"мс",
+    "gigabytes":"ГБ",
+    "megabytes":"МБ",
+    "JournalSpace":"Размер журналов",
+    "FreeJournalSpacePercent":"Свободное место",
+    "LicenseStatus":"Статус лицензии",
+    "LicenseExpirationDate":"Дата окончания лицензии",
+    "LicenseInvalidReason":"Причина нерабочей лицензии",
+    "LockTable":"% залоченных таблиц"
 }

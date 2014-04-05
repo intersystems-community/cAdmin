@@ -17,9 +17,12 @@ function Navigator() {
     
     _this.navigate = function(area, url, animate) {
         _this.contentArea = area || "document";
+        //Clear window.script namespace
         delete window.script;
+        //Run our destructor
         if (window.page && page._destruct) page._destruct();
         if (animate) $(_this.contentArea).hide();
+        //Remove all html nodes inside contentArea
         $(_this.contentArea).find("> *").remove();
         $(_this.contentArea).load(""+_this.pagesDirectory+"/"+url, function(){
             if(animate) $(_this.contentArea).show(animate);

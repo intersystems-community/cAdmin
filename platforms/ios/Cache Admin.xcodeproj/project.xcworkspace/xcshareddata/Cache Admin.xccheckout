@@ -5,19 +5,19 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>11ED91F3-22FA-45FD-B04E-54A82E01E3B4</string>
+	<string>ACEBB188-7E78-4094-908A-D792A86060BC</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Cache Admin</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>B4C1F2BF-676A-43B2-B27F-A666D3EDB1DD</key>
+		<key>A66A249B-35E9-4D9D-B660-62B1DE451375</key>
 		<string>https://github.com/ShmidtIvan/cAdmin.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>platforms/ios/Cache Admin.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>B4C1F2BF-676A-43B2-B27F-A666D3EDB1DD</key>
+		<key>A66A249B-35E9-4D9D-B660-62B1DE451375</key>
 		<string>../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -25,14 +25,14 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>B4C1F2BF-676A-43B2-B27F-A666D3EDB1DD</string>
+	<string>A66A249B-35E9-4D9D-B660-62B1DE451375</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>B4C1F2BF-676A-43B2-B27F-A666D3EDB1DD</string>
+			<string>A66A249B-35E9-4D9D-B660-62B1DE451375</string>
 			<key>IDESourceControlWCCName</key>
 			<string>cAdmin</string>
 		</dict>

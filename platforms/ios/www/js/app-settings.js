@@ -10,7 +10,6 @@
         });
          return false;
      };
-     //$("#save").on("click",SaveToDB);
      $("#back").off();
      $("#back").one("tap", SaveToDB);
  };
